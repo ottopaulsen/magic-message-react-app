@@ -1,5 +1,4 @@
-import React, {Component} from 'react'
-import {AuthContext} from '../auth'
+import React, { Component } from 'react'
 import { Button } from '@material-ui/core';
 
 class Footer extends Component {
@@ -7,18 +6,14 @@ class Footer extends Component {
     render() {
         console.log("Footer render")
         return (
-            <AuthContext.Consumer>
-                {auth =>
-                    <footer className='footer'>
-                        <div className='title footerpart'>
-                            {auth.isAuthenticated() ? "Logged in as " + auth.getUser() : "Not logged in"}
-                        </div>
-                        <div>
-                            <Button onClick={auth.signOut}>Sign out</Button>
-                        </div>
-                    </footer>
-                }
-            </AuthContext.Consumer>
+            <footer className='footer'>
+                <div className='title footerpart'>
+                    {this.props.auth.isAuthenticated() ? "Logged in as " + this.props.auth.getUser() : "Not logged in"}
+                </div>
+                <div>
+                    <Button onClick={this.props.auth.signOut}>Sign out</Button>
+                </div>
+            </footer>
         );
     }
 }

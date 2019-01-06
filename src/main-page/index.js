@@ -3,9 +3,9 @@ import './main-page.css';
 import Header from './header'
 import Footer from './footer'
 import ScreenSlider from './screenslider'
-import { Auth, AuthContext } from '../auth'
+import { Auth } from '../auth'
 import SignIn from '../signin'
-import firebase from '../firebase'
+import { Firebase } from '../firebase'
 
 class App extends Component {
 
@@ -13,10 +13,13 @@ class App extends Component {
 
     constructor(props) {
         super(props)
-        console.log("App constructor")
+        const firebase = new Firebase()
+        const auth = new Auth(firebase)
         this.state = {
-            auth: new Auth(firebase)
+            firebase: firebase,
+            auth: auth,
         }
+        console.log("App constructor")
     }
 
     componentDidMount() {
@@ -36,11 +39,11 @@ class App extends Component {
 
     fetchScreens = () => {
         fetch('/screens.json')
-          .then(rsp => rsp.json())
-          .then(screens => {
-            this.screens = screens
-            this.setDefaultScreen()
-          })
+            .then(rsp => rsp.json())
+            .then(screens => {
+                this.screens = screens
+                this.setDefaultScreen()
+            })
     }
 
     setDefaultScreen = () => {
@@ -56,10 +59,12 @@ class App extends Component {
         }
 
         let page = null
-        if (this.state.auth.isAuthenticated()) {
+        if (this.state.auth.isLoading()) {
+            page = null
+        } else if (this.state.auth.isAuthenticated()) {
             page = <ScreenSlider />
         } else {
-            page = <SignIn />
+            page = <SignIn auth={this.state.auth}/>
         }
 
         console.log("App render")
@@ -67,17 +72,15 @@ class App extends Component {
         return (
             <div>
                 {errorText}
-                <AuthContext.Provider value={this.state.auth}>
-                    <div className="flex-container">
-                        <Header />
-                    </div>
-                    <div className="flex-container">
-                        {page}
-                    </div>
-                    <div className="flex-container">
-                        <Footer />
-                    </div>
-                </AuthContext.Provider>
+                <div className="flex-container">
+                    <Header />
+                </div>
+                <div className="flex-container">
+                    {page}
+                </div>
+                <div className="flex-container">
+                    <Footer  auth={this.state.auth}/>
+                </div>
             </div>
         )
     }

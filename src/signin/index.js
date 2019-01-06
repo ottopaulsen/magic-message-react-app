@@ -1,8 +1,6 @@
 import React from 'react';
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
-import firebase from '../firebase'
-// import firebase from 'firebase';
-import {AuthContext} from '../auth'
+import firebase from 'firebase';
 
 // const firebaseConfig = {
 //     apiKey: process.env.REACT_APP_API_KEY,
@@ -33,15 +31,11 @@ class SignIn extends React.Component {
     render() {
         console.log("SignIn render")
         return (
-            <AuthContext.Consumer>
-                {auth =>
                     <div>
                         <h1>My App</h1>
                         <p>Please sign-in:</p>
-                        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={auth.fbAuth} />
+                        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={this.props.auth.fbAuth} />
                     </div>
-                }
-            </AuthContext.Consumer>
         );
     }
 }
