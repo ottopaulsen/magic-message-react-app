@@ -9,14 +9,15 @@ class Auth {
     
     constructor(firebase) {
         this.fbAuth = firebase.auth;
+        this.loadFromLocalStorage()
     }
 
     loadFromLocalStorage() {
-        this.user = localStorage.getItem(lsPrefix + 'user');
+        this.user = JSON.parse(localStorage.getItem(lsPrefix + 'user'));
     }
 
     saveToLocalStorage() {
-        localStorage.setItem(lsPrefix + 'user', this.user);
+        localStorage.setItem(lsPrefix + 'user', JSON.stringify(this.user));
     }
 
     authStateChanged(user) {
