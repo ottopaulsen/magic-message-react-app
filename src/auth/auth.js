@@ -12,22 +12,26 @@ class Auth {
         this.loadFromLocalStorage()
     }
 
-    loadFromLocalStorage() {
+    loadFromLocalStorage = () => {
         this.user = JSON.parse(localStorage.getItem(lsPrefix + 'user'));
     }
 
-    saveToLocalStorage() {
+    saveToLocalStorage = () => {
         localStorage.setItem(lsPrefix + 'user', JSON.stringify(this.user));
     }
 
-    authStateChanged(user) {
+    clearFromLocalStorage = () => {
+        localStorage.removeItem(lsPrefix + 'user');
+    }
+
+    authStateChanged = (user) => {
         this.user = user
         this.loading = false
         this.saveToLocalStorage()
         console.log("Auth state changed. User: ", user)
     }
 
-    getUser() {
+    getUser = () => {
         if (this.user) {
             return this.user.displayName
         } else {
@@ -35,17 +39,18 @@ class Auth {
         }
     }
 
-    isAuthenticated() {
+    isAuthenticated = () => {
         console.log("isAuthenticated: ", !!this.user)
         return !!this.user
     }
 
-    signOut() {
+    signOut = () => {
         console.log("signOut")
+        this.clearFromLocalStorage()
         this.fbAuth.signOut()
     }
 
-    isLoading() {
+    isLoading = () => {
         return this.loading
     }
 
