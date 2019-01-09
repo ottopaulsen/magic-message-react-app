@@ -6,6 +6,7 @@ import ScreenSlider from './screenslider'
 import { Auth } from '../auth'
 import SignIn from '../signin'
 import { Firebase } from '../firebase'
+import firebase from 'firebase'
 
 class App extends Component {
 
@@ -13,10 +14,11 @@ class App extends Component {
 
     constructor(props) {
         super(props)
-        const firebase = new Firebase()
-        const auth = new Auth(firebase)
+        const fb = new Firebase()
+        const auth = new Auth(fb)
+        auth.fbAuth.setPersistence(firebase.auth.Auth.Persistence.LOCAL)
         this.state = {
-            firebase: firebase,
+            firebase: fb,
             auth: auth,
         }
         console.log("App constructor")

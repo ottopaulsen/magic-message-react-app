@@ -6,14 +6,18 @@ class Auth {
 
     user = null
     loading = true
-    
+
     constructor(firebase) {
         this.fbAuth = firebase.auth;
-        this.loadFromLocalStorage()
+        // this.loadFromLocalStorage()
+        // if (this.user) {
+        //         this.loading = false
+        // }
     }
 
     loadFromLocalStorage = () => {
         this.user = JSON.parse(localStorage.getItem(lsPrefix + 'user'));
+        console.log("Loaded user from local storage ", this.user)
     }
 
     saveToLocalStorage = () => {
@@ -25,9 +29,13 @@ class Auth {
     }
 
     authStateChanged = (user) => {
+        // user.getIdToken().then((token) => {
+        //     console.log("Got id token: ", token, user)
+        // })
         this.user = user
         this.loading = false
         this.saveToLocalStorage()
+        // this.loadFromLocalStorage()
         console.log("Auth state changed. User: ", user)
     }
 
@@ -39,8 +47,9 @@ class Auth {
         }
     }
 
+
+
     isAuthenticated = () => {
-        console.log("isAuthenticated: ", !!this.user)
         return !!this.user
     }
 
