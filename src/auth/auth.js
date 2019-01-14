@@ -1,18 +1,14 @@
+import React, { Component } from 'react';
+import App from '../main-page'
 
 const lsPrefix = 'AUTH'
 
-class Auth {
+class Auth extends Component {
 
-
-    user = null
-    loading = true
-
-    constructor(firebase) {
-        this.fbAuth = firebase.auth;
-        // this.loadFromLocalStorage()
-        // if (this.user) {
-        //         this.loading = false
-        // }
+    state = {
+        user: null,
+        loading: true,
+        token: null,
     }
 
     loadFromLocalStorage = () => {
@@ -29,14 +25,18 @@ class Auth {
     }
 
     authStateChanged = (user) => {
-        // user.getIdToken().then((token) => {
-        //     console.log("Got id token: ", token, user)
-        // })
         this.user = user
         this.loading = false
         this.saveToLocalStorage()
-        // this.loadFromLocalStorage()
-        console.log("Auth state changed. User: ", user)
+    }
+
+    idTokenChanged = (user, tokenChanged) => {
+        if (user) {
+            user.getIdToken().then(result => {
+                this.token = result
+                tokenChanged()
+            })
+        }
     }
 
     getUser = () => {
@@ -47,7 +47,9 @@ class Auth {
         }
     }
 
-
+    getToken = () => {
+        return this.token
+    }
 
     isAuthenticated = () => {
         return !!this.user
@@ -56,13 +58,22 @@ class Auth {
     signOut = () => {
         console.log("signOut")
         this.clearFromLocalStorage()
-        this.fbAuth.signOut()
+        this.props.fbAuth.signOut()
     }
 
     isLoading = () => {
         return this.loading
     }
 
+    fbAuth = () => {
+        return this.props.fbAuth
+    }
+
+    render = () => {
+        return (
+            <App auth={this}/>
+        )
+    }
 }
 
 export { Auth }

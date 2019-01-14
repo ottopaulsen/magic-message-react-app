@@ -1,13 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './main-page';
 import * as serviceWorker from './serviceWorker';
+import { Firebase, FirebaseContext } from './firebase'
+import { Auth } from './auth'
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
 ReactDOM.render(
-        <App />,
+    <FirebaseContext.Provider value={new Firebase()}>
+        <FirebaseContext.Consumer>
+            {firebase => <Auth fbAuth={firebase.auth} />}
+        </FirebaseContext.Consumer>
+    </FirebaseContext.Provider>,
     document.getElementById('root'),
 );
 
@@ -15,3 +20,5 @@ ReactDOM.render(
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: http://bit.ly/CRA-PWA
 serviceWorker.unregister();
+
+

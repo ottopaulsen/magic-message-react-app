@@ -4,13 +4,17 @@
   "private": true,
   "dependencies": {
     "@material-ui/core": "^3.8.1",
+    "@material-ui/icons": "^3.0.2",
     "@material/card": "^0.42.0",
     "firebase": "^5.7.2",
     "firebaseui": "^3.5.1",
+    "import": "0.0.6",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-firebaseui": "^3.1.2",
-    "react-scripts": "^2.1.2"
+    "react-request": "^3.1.2",
+    "react-scripts": "^2.1.2",
+    "react-swipeable-views": "^0.13.0"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import { Button } from '@material-ui/core';
 
 class Footer extends Component {
     state = {}
@@ -8,11 +7,11 @@ class Footer extends Component {
         return (
             <footer className='footer'>
                 <div className='title footerpart'>
-                    {this.props.auth.isAuthenticated() ? "Logged in as " + this.props.auth.getUser() : "Not logged in"}
+                    {this.props.text}
                 </div>
-                <div>
+                {/* <div>
                     <Button onClick={this.props.auth.signOut}>Sign out</Button>
-                </div>
+                </div> */}
             </footer>
         );
     }

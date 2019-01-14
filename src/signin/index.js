@@ -27,7 +27,7 @@ const uiConfig = {
     ]
 };
 
-class SignIn extends React.Component {
+class SignInPage extends React.Component {
     render() {
         console.log("SignIn render")
         return (
@@ -40,4 +40,4 @@ class SignIn extends React.Component {
     }
 }
 
-export default SignIn
+export default SignInPage
