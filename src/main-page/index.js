@@ -6,13 +6,34 @@ import InstructionsPage from '../instructions'
 import { Auth } from '../auth'
 import SignInPage from '../signin'
 import { Firebase } from '../firebase';
-import MagicScreens from './magicscreens'
+import MagicScreens from './magicscreens';
 
+
+const lsPrefix = 'Magic-'
 const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
 const getScreensUrl = magicServerUrl + '/screens?dummy=' + Date.now()
 
 
-
+const styles = theme => ({
+    root: {
+        maxWidth: 400,
+        flexGrow: 1,
+    },
+    header: {
+        display: 'flex',
+        alignItems: 'center',
+        height: 50,
+        paddingLeft: theme.spacing.unit * 4,
+        backgroundColor: theme.palette.background.default,
+    },
+    img: {
+        height: 255,
+        display: 'block',
+        maxWidth: 400,
+        overflow: 'hidden',
+        width: '100%',
+    },
+});
 
 class App extends Component {
 
@@ -22,20 +43,21 @@ class App extends Component {
         super(props)
         const fb = new Firebase()
         const auth = new Auth(fb)
+        const screens = JSON.parse(localStorage.getItem(lsPrefix + 'screens')) || []
         this.state = {
             firebase: fb,
             auth: auth,
+            fetchingScreens: false,
             isAuthenticated: false,
             mustSignIn: false,
             mustShowInstructions: false,
-            screens: [],
-            activeScreen: null
+            screens: screens,
         }
         console.log("App constructor")
+
     }
 
     componentDidMount() {
-        // this.fetchScreens()
         this.props.auth.fbAuth().onAuthStateChanged(user => {
             const auth = this.props.auth
             auth.authStateChanged(user)
@@ -50,9 +72,9 @@ class App extends Component {
             auth.idTokenChanged(user, () => {
                 this.setState({ auth })
                 user.getIdToken()
-                .then(token => {
-                    this.fetchScreens(token)
-                })
+                    .then(token => {
+                        this.fetchScreens(token)
+                    })
             })
         });
 
@@ -66,30 +88,51 @@ class App extends Component {
 
     fetchScreens = (token) => {
 
-        // const token = this.props.auth.getToken()
-
         let self = this
+
+        this.setState({ fetchingScreens: true })
 
         const headers = {
             'Content-Type': 'application/json; charset=utf-8',
             'Authorization': 'Bearer ' + token
         }
 
-        fetch(getScreensUrl, {headers: headers})
+        fetch(getScreensUrl, { headers: headers })
             .then(rsp => rsp.json())
             .then(screens => {
-                self.setState({screens})
-                self.setDefaultScreen()
+                // const activeScreen = self.state.activeScreen >= screens.length ? 0 : self.state.activeScreen
+                self.setState({ screens: screens })
+                localStorage.setItem(lsPrefix + 'screens', JSON.stringify(screens))
+                self.setState({ fetchingScreens: false })
             })
     }
 
-    setDefaultScreen = () => {
-        const defaultScreen = 3
-        this.setState({ activeScreen: defaultScreen })
-        console.log("App setDefaultScreen")
-    }
+    // nextScreen = () => {
+    //     this.setState(state => {
+    //         let screen = state.activeScreen
+    //         if (screen < state.screens.length - 1) {
+    //             screen++
+    //         }
+    //         localStorage.setItem(lsPrefix + 'LastUsedScreen', screen)
+    //         return { activeScreen: screen };
+    //     });
+    // }
+
+    // prevScreen = () => {
+    //     this.setState(state => {
+    //         let screen = state.activeScreen
+    //         if (screen > 0) {
+    //             screen--
+    //         }
+    //         localStorage.setItem(lsPrefix + 'LastUsedScreen', screen)
+    //         return { activeScreen: screen };
+    //     });
+    // }
 
     render = () => {
+
+        // const { classes, theme } = this.props;
+
         let errorText = ""
         if (this.hasError) {
             errorText = "<div><h2>An error occured</h2></div>"
@@ -101,18 +144,29 @@ class App extends Component {
             page = <SignInPage auth={this.props.auth} />
         } else if (this.state.mustShowInstructions) {
             page = <InstructionsPage />
+        // } else if (this.state.screens.length > 0 && this.state.activeScreen != null && this.state.activeScreen >= 0) {
         } else if (this.state.screens.length > 0) {
-            page = <MagicScreens screens={this.state.screens} activeScreen={this.state.activeScreen} />
+            page = <MagicScreens screens={this.state.screens} />
+            
+            // <div>
+            //     <Screen screen={this.state.screens[this.state.activeScreen]} />
+            //     <Stepper
+            //         numberOfSteps={this.state.screens.length}
+            //         activeStep={this.state.activeScreen}
+            //         next={this.nextScreen}
+            //         prev={this.prevScreen}
+            //     />
+            // </div>
         }
 
         // Decide footer part
         let footerText = ""
         if (!this.state.isAuthenticated) {
             footerText = "Authenticating..."
+        } else if (this.state.fetchingScreens) {
+            footerText = "Fetching screens..."
         } else if (this.state.screens.length > 0) {
             footerText = "Signed in as " + this.props.auth.getUser()
-        } else {
-            footerText = "Fetching screens..."
         }
 
         return (

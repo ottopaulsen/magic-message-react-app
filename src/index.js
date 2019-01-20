@@ -4,15 +4,31 @@ import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { Firebase, FirebaseContext } from './firebase'
 import { Auth } from './auth'
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import  'typeface-monda';
+
+const theme = createMuiTheme({
+    typography: {
+      // Use the system font instead of the default Roboto font.
+      fontFamily: [
+        'Monda',
+      ].join(','),
+      useNextVariants: true,
+    },
+  });
+
+
 // import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 
 
 ReactDOM.render(
-    <FirebaseContext.Provider value={new Firebase()}>
-        <FirebaseContext.Consumer>
-            {firebase => <Auth fbAuth={firebase.auth} />}
-        </FirebaseContext.Consumer>
-    </FirebaseContext.Provider>,
+    <MuiThemeProvider theme={theme}>
+        <FirebaseContext.Provider value={new Firebase()}>
+            <FirebaseContext.Consumer>
+                {firebase => <Auth fbAuth={firebase.auth} />}
+            </FirebaseContext.Consumer>
+        </FirebaseContext.Provider>
+    </MuiThemeProvider>,
     document.getElementById('root'),
 );
 

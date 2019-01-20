@@ -1,14 +1,16 @@
 import React, { Component } from 'react'
+import Typography from '@material-ui/core/Typography';
+import 'typeface-monda';
 
 class Header extends Component {
     state = {}
     render() {
         return (
-            <header className='header'>
-                <div className='title headerpart'>
+            <div>
+                <Typography variant="h4" align="center">
                     Send Magic Message
-                        </div>
-            </header>
+                </Typography>
+            </div>
         );
     }
 }

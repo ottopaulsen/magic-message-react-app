@@ -1,18 +1,16 @@
 import React, { Component } from 'react'
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
+import Messages from './messages'
+import {FirebaseContext} from '../firebase'
 
 class Screen extends Component {
     render() {
         return (
-            <Card>
-                <CardContent>
-                    Screen {this.props.screen.name} comes here.<br />
-                </CardContent>
-                <CardActions>
-                </CardActions>
-            </Card>
+            <div class="message-screen">
+                <h1>{this.props.screen.name}</h1>
+                <FirebaseContext.Consumer>
+                    {firebase => <Messages screenKey={this.props.screen.key} db={firebase.db} />}
+                </FirebaseContext.Consumer>
+            </div>
         )
     }
 }
