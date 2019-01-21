@@ -1,21 +1,35 @@
 import React, { Component } from 'react'
+import AppBar from '@material-ui/core/AppBar';
+import { withStyles } from '@material-ui/core/styles';
+import PropTypes from 'prop-types';
+import Typography from '@material-ui/core/Typography';
+
+const styles = theme => ({
+    appBar: {
+        top: 'auto',
+        bottom: 0,
+    },
+});
 
 class Footer extends Component {
+
+
+
     state = {}
     render() {
+        const { classes } = this.props;
         console.log("Footer render")
         return (
-            <footer className='footer'>
-                <div className='title footerpart'>
-                    {this.props.text}
-                </div>
-                {/* <div>
-                    <Button onClick={this.props.auth.signOut}>Sign out</Button>
-                </div> */}
-            </footer>
+            <AppBar position="fixed" color="primary" className={classes.appBar}>
+                <div align="center">{this.props.text}</div>
+            </AppBar>
         );
     }
 }
 
 
-export default Footer;
+Footer.propTypes = {
+    classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(Footer);

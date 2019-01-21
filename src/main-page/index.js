@@ -107,31 +107,8 @@ class App extends Component {
             })
     }
 
-    // nextScreen = () => {
-    //     this.setState(state => {
-    //         let screen = state.activeScreen
-    //         if (screen < state.screens.length - 1) {
-    //             screen++
-    //         }
-    //         localStorage.setItem(lsPrefix + 'LastUsedScreen', screen)
-    //         return { activeScreen: screen };
-    //     });
-    // }
-
-    // prevScreen = () => {
-    //     this.setState(state => {
-    //         let screen = state.activeScreen
-    //         if (screen > 0) {
-    //             screen--
-    //         }
-    //         localStorage.setItem(lsPrefix + 'LastUsedScreen', screen)
-    //         return { activeScreen: screen };
-    //     });
-    // }
-
     render = () => {
 
-        // const { classes, theme } = this.props;
 
         let errorText = ""
         if (this.hasError) {
@@ -144,19 +121,8 @@ class App extends Component {
             page = <SignInPage auth={this.props.auth} />
         } else if (this.state.mustShowInstructions) {
             page = <InstructionsPage />
-        // } else if (this.state.screens.length > 0 && this.state.activeScreen != null && this.state.activeScreen >= 0) {
         } else if (this.state.screens.length > 0) {
             page = <MagicScreens screens={this.state.screens} />
-            
-            // <div>
-            //     <Screen screen={this.state.screens[this.state.activeScreen]} />
-            //     <Stepper
-            //         numberOfSteps={this.state.screens.length}
-            //         activeStep={this.state.activeScreen}
-            //         next={this.nextScreen}
-            //         prev={this.prevScreen}
-            //     />
-            // </div>
         }
 
         // Decide footer part

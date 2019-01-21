@@ -7,7 +7,7 @@ class Header extends Component {
     render() {
         return (
             <div>
-                <Typography variant="h4" align="center">
+                <Typography variant="h5" align="center">
                     Send Magic Message
                 </Typography>
             </div>
