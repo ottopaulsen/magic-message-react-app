@@ -15,6 +15,7 @@
     "react-request": "^3.1.2",
     "react-scripts": "^2.1.2",
     "react-swipeable-views": "^0.13.0",
+    "react-tiny-virtual-list": "^2.2.0",
     "typeface-monda": "0.0.54"
   },
   "scripts": {

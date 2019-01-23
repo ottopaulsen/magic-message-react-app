@@ -28,7 +28,11 @@ class Screen extends Component {
     constructor(props) {
         super(props)
         this.lsKeyLifetime = lsPrefix + 'lifetime-' + this.props.screen.name
-        this.state = { lifetime: localStorage.getItem(this.lsKeyLifetime) || 15 }
+        let lifetime = parseInt(localStorage.getItem(this.lsKeyLifetime) || "15", 10)
+        if (isNaN(lifetime)) {
+            lifetime = 15
+        }
+        this.state = { lifetime }
     }
 
     setLifetime = (minutes) => {
@@ -48,7 +52,7 @@ class Screen extends Component {
                         {firebase => <Messages screenKey={this.props.screen.key} db={firebase.db} />}
                     </FirebaseContext.Consumer>
                 </Paper>
-                <LifeTimeSelector />
+                <LifeTimeSelector lifetime={this.state.lifetime} setLifetime={this.setLifetime} />
             </div>
         )
     }
