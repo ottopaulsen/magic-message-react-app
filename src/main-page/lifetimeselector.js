@@ -4,6 +4,7 @@ import { withStyles } from '@material-ui/core/styles';
 import LifeTimeChip from './lifetimechip';
 import PropTypes from 'prop-types';
 import GridList from '@material-ui/core/GridList';
+import Typography from '@material-ui/core/Typography';
 
 const alternatives = [
     { minutes: 1, label: '1 m' },
@@ -33,12 +34,18 @@ const styles = theme => ({
         justifyContent: 'center',
         flexWrap: 'wrap',
         padding: theme.spacing.unit / 2,
+        paddingTop: '20px',
     },
     gridList: {
         flexWrap: 'nowrap',
         transform: 'translateZ(0)',
         cellHeight: 50,
     },
+    sectionHeader: {
+        textAlign: 'left',
+        width: '100%',
+        paddingBottom: '10px',
+    }
 });
 
 
@@ -58,7 +65,7 @@ class LifeTimeSelector extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root}>
-                <div>Lifetime:</div>
+                <Typography inline="true" className={classes.sectionHeader}>Message lifetime:</Typography>
                 <GridList className={classes.gridList} cellHeight={30}>
                     {alternatives.map(chip => (
                         <LifeTimeChip

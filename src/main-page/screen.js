@@ -5,6 +5,7 @@ import LifeTimeSelector from './lifetimeselector'
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
+import WriteMessage from './writemessage'
 
 const lsPrefix = 'Magic-'
 
@@ -53,6 +54,7 @@ class Screen extends Component {
                     </FirebaseContext.Consumer>
                 </Paper>
                 <LifeTimeSelector lifetime={this.state.lifetime} setLifetime={this.setLifetime} />
+                <WriteMessage lifetime={this.state.lifetime} />
             </div>
         )
     }
