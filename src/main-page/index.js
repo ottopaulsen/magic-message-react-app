@@ -3,10 +3,9 @@ import './main-page.css';
 import Header from './header'
 import Footer from './footer'
 import InstructionsPage from '../instructions'
-import { Auth } from '../auth'
 import SignInPage from '../signin'
-import { Firebase } from '../firebase';
 import MagicScreens from './magicscreens';
+import { Offline, Online } from "react-detect-offline";
 
 
 const lsPrefix = 'Magic-'
@@ -14,39 +13,14 @@ const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
 const getScreensUrl = magicServerUrl + '/screens?dummy=' + Date.now()
 
 
-const styles = theme => ({
-    root: {
-        maxWidth: 400,
-        flexGrow: 1,
-    },
-    header: {
-        display: 'flex',
-        alignItems: 'center',
-        height: 50,
-        paddingLeft: theme.spacing.unit * 4,
-        backgroundColor: theme.palette.background.default,
-    },
-    img: {
-        height: 255,
-        display: 'block',
-        maxWidth: 400,
-        overflow: 'hidden',
-        width: '100%',
-    },
-});
-
 class App extends Component {
 
     state = {}
 
     constructor(props) {
         super(props)
-        const fb = new Firebase()
-        const auth = new Auth(fb)
         const screens = JSON.parse(localStorage.getItem(lsPrefix + 'screens')) || []
         this.state = {
-            firebase: fb,
-            auth: auth,
             fetchingScreens: false,
             isAuthenticated: false,
             mustSignIn: false,
@@ -75,6 +49,9 @@ class App extends Component {
                     .then(token => {
                         this.fetchScreens(token)
                     })
+                    .catch(error => {
+                        console.log('Failed to getIdToken: ', error)
+                    })
             })
         });
 
@@ -83,7 +60,7 @@ class App extends Component {
 
     componentDidCatch(error, info) {
         this.setState({ hasError: true })
-        console.log(error, info)
+        console.log('App component did catch error: ', error, info)
     }
 
     fetchScreens = (token) => {
@@ -104,6 +81,9 @@ class App extends Component {
                 self.setState({ screens: screens })
                 localStorage.setItem(lsPrefix + 'screens', JSON.stringify(screens))
                 self.setState({ fetchingScreens: false })
+            })
+            .catch(error => {
+                console.log('Error fetching screens: ', error)
             })
     }
 
@@ -141,12 +121,17 @@ class App extends Component {
                 <div className="flex-container">
                     <Header />
                 </div>
-                <div className="flex-container">
-                    {page}
-                </div>
-                <div className="flex-container">
-                    <Footer text={footerText} />
-                </div>
+                <Online>
+                    <div className="flex-container">
+                        {page}
+                    </div>
+                    <div className="flex-container">
+                        <Footer text={footerText} />
+                    </div>
+                </Online>
+                <Offline>
+                    <p>Your internet connection seems to be down</p>
+                </Offline>
             </div>
         )
     }

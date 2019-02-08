@@ -2,9 +2,7 @@ import React, { Component } from 'react'
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import { Button } from '@material-ui/core';
+import { Button, TextField } from '@material-ui/core';
 
 
 
@@ -16,43 +14,56 @@ const styles = theme => ({
         paddingTop: '25px'
     },
     button: {
-        width: '21px',
+        width: '20%',
     },
     textField: {
-        marginLeft: 0,
+        marginLeft: '0px',
+        marginRight: '0px',
         width: '80%',
         marginTop: '0px',
         marginBottom: '0px',
+        disableUnderline: true,
     },
 });
 
 
 
 class WriteMessage extends Component {
-    state = {}
+    state = {message: ''}
 
-    handleChange = name => event => {
+    handleChange = event => {
         this.setState({
-            [name]: event.target.value,
+            message: event.target.value,
         });
     };
-    
+
+    sendMessage = () => {
+        console.log('Sending message: ' + this.state.message)
+        this.setState({message: ''})
+    }
+
     render = () => {
         const { classes } = this.props;
         return (
-            <Paper className={classes.root}>
+            <Paper className={classes.root} elevation={0}>
                 <TextField
                     id="message-input"
                     label="Message"
                     className={classes.textField}
-                    value={this.state.message}
-                    onChange={this.handleChange('message')}
-                    margin="normal"
-                    variant="outlined"
+                    variant="filled"
                     autoFocus={true}
                     fullWidth={false}
+                    value={this.state.message}
+                    onChange={this.handleChange}
                 />
-                <Button style={{ container: { height: 10} }} variant="contained" size="small" color='primary' className={classes.button}>Send</Button>
+                <Button 
+                    style={{ container: { height: 10} }} 
+                    variant="contained" 
+                    size="small" 
+                    color='primary' 
+                    className={classes.button}
+                    onClick={this.sendMessage}
+                >Send</Button>
             </Paper>
         );
     }

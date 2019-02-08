@@ -1,19 +1,23 @@
 import React, { Component } from 'react'
 import Messages from './messages'
 import { FirebaseContext } from '../firebase'
-import LifeTimeSelector from './lifetimeselector'
 import Paper from '@material-ui/core/Paper';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
-import WriteMessage from './writemessage'
 
 const lsPrefix = 'Magic-'
 
 const styles = theme => ({
+    root: {
+        paddingLeft: '10px',
+        paddingRight: '10px',
+    },
     paper: {
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
+        paddingLeft: theme.spacing.unit * 2,
+        paddingRight: theme.spacing.unit * 2,
         background: "#212121",
         color: "#dddddd",
         height: "250px",
@@ -26,35 +30,18 @@ const styles = theme => ({
 
 class Screen extends Component {
 
-    constructor(props) {
-        super(props)
-        this.lsKeyLifetime = lsPrefix + 'lifetime-' + this.props.screen.name
-        let lifetime = parseInt(localStorage.getItem(this.lsKeyLifetime) || "15", 10)
-        if (isNaN(lifetime)) {
-            lifetime = 15
-        }
-        this.state = { lifetime }
-    }
-
-    setLifetime = (minutes) => {
-        this.setState({ lifetime: minutes })
-        localStorage.setItem(this.lsKeyLifetime, minutes)
-    }
-
     render() {
-        const { classes } = this.props;
+        const { classes, screen } = this.props;
         return (
-            <div>
+            <div className={classes.root}>
                 <Paper className={classes.paper} elevation={1}>
                     <Typography className={classes.screenName} align="center" variant="h5">
-                        {this.props.screen.name}
+                        {screen.name}
                     </Typography>
                     <FirebaseContext.Consumer>
-                        {firebase => <Messages screenKey={this.props.screen.key} db={firebase.db} />}
+                        {firebase => <Messages screenKey={screen.key} db={firebase.db} />}
                     </FirebaseContext.Consumer>
                 </Paper>
-                <LifeTimeSelector lifetime={this.state.lifetime} setLifetime={this.setLifetime} />
-                <WriteMessage lifetime={this.state.lifetime} />
             </div>
         )
     }

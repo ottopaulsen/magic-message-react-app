@@ -7,8 +7,12 @@ import Button from '@material-ui/core/Button';
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
+import { virtualize, bindKeyboard } from 'react-swipeable-views-utils';
+import { mod } from 'react-swipeable-views-core';
+import LifeTimeSelector from './lifetimeselector'
+import WriteMessage from './writemessage'
 
-
+const VirtualizeSwipeableViews = bindKeyboard(virtualize(SwipeableViews));
 
 const lsPrefix = 'Magic-'
 
@@ -21,7 +25,7 @@ const styles = theme => ({
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,
         paddingBottom: theme.spacing.unit * 2,
-      },
+    },
     header: {
         display: 'flex',
         alignItems: 'center',
@@ -29,53 +33,62 @@ const styles = theme => ({
         paddingLeft: theme.spacing.unit * 4,
         backgroundColor: theme.palette.background.default,
     },
-    img: {
-        height: 255,
-        display: 'block',
-        maxWidth: 400,
-        overflow: 'hidden',
-        width: '100%',
-    },
 });
 
 class MagicScreens extends Component {
 
-    state = {}
+    state = {
+        activeScreen: 0,
+        lifetime: 1,
+    }
 
     constructor(props) {
         super(props)
         const defaultScreen = parseInt(localStorage.getItem(lsPrefix + 'LastUsedScreen') || '0')
-        this.state = {
-            activeScreen: defaultScreen
+        this.setState({activeScreen: defaultScreen})
+    }
+    
+    componentDidMount = () => {
+        this.handleChangeIndex(this.state.activeScreen)
+    }
+
+    handleChangeIndex = index => {
+        const activeScreen = mod(index, this.props.screens.length)
+        console.log('handleChangeIndex activeScreen = ', activeScreen)
+        this.lsKeyLifetime = lsPrefix + 'lifetime-' + this.props.screens[activeScreen].name
+        let lifetime = parseInt(localStorage.getItem(this.lsKeyLifetime) || "1", 10)
+        if (isNaN(lifetime)) {
+            lifetime = 720
+        }
+        console.log('handleChangeIndex activeScreen = ', activeScreen, ' lifetime = ', lifetime)
+        this.setState({ activeScreen, lifetime });
+        localStorage.setItem(lsPrefix + 'LastUsedScreen', activeScreen)
+    };
+
+    slideRenderer = params => {
+        const { index, key } = params;
+        console.log('slideRenderer index = ' + index)
+        if(index === this.state.activeScreen) {
+                return (
+                    <div key={key}>
+                    <Screen
+                        screen={this.props.screens[mod(index, this.props.screens.length)]}
+                        />
+                </div>
+            )
+        } else {
+            return (
+                <div key={key}>
+                </div>
+            )
         }
     }
 
-
-    nextScreen = () => {
-        this.setState(state => {
-            let screen = state.activeScreen
-            if (screen < this.props.screens.length - 1) {
-                screen++
-            }
-            localStorage.setItem(lsPrefix + 'LastUsedScreen', screen)
-            return { activeScreen: screen };
-        });
+    setLifetime = lifetime => {
+        console.log('setLifetime = ', lifetime)
+        localStorage.setItem(this.lsKeyLifetime, lifetime)
+        this.setState({ lifetime })
     }
-
-    prevScreen = () => {
-        this.setState(state => {
-            let screen = state.activeScreen
-            if (screen > 0) {
-                screen--
-            }
-            localStorage.setItem(lsPrefix + 'LastUsedScreen', screen)
-            return { activeScreen: screen };
-        });
-    }
-
-    handleStepChange = activeScreen => {
-        this.setState({ activeScreen });
-    };
 
     render() {
         const { classes, theme, screens } = this.props;
@@ -89,33 +102,31 @@ class MagicScreens extends Component {
                     position="static"
                     activeStep={activeScreen}
                     className={classes.mobileStepper}
-                    nextButton={
-                        <Button size="small" onClick={this.nextScreen} disabled={activeScreen === screens.length - 1}>
-                            Next
-                            {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                        </Button>
-                    }
-                    backButton={
-                        <Button size="small" onClick={this.prevScreen} disabled={activeScreen === 0}>
-                            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                            Back
-                        </Button>
-                    }
+                // nextButton={
+                //     <Button size="small" onClick={this.nextScreen} disabled={activeScreen === (screens.length - 1)}>
+                //         Next
+                //         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                //     </Button>
+                // }
+                // backButton={
+                //     <Button size="small" onClick={this.prevScreen} disabled={activeScreen === 0}>
+                //         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                //         Back
+                //     </Button>
+                // }
                 />
-                    <SwipeableViews
-                        axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-                        index={activeScreen}
-                        onChangeIndex={this.handleStepChange}
-                        enableMouseEvents
-                    >
-                        {screens.map((step, index) => (
-                            <div key={step.key}>
-                                {activeScreen === index ? (
-                                    <Screen screen={this.props.screens[this.state.activeScreen]} />
-                                ) : null}
-                            </div>
-                        ))}
-                    </SwipeableViews>
+                <VirtualizeSwipeableViews
+                    index={activeScreen}
+                    onChangeIndex={this.handleChangeIndex}
+                    slideRenderer={this.slideRenderer}
+                    axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+                    enableMouseEvents={true}
+                    overscanSlideAfter={1}
+                    overscanSlideBefore={1}
+                >
+                </VirtualizeSwipeableViews>
+                <LifeTimeSelector lifetime={this.state.lifetime} setLifetime={this.setLifetime} />
+                <WriteMessage lifetime={this.state.lifetime} />
             </div>
         );
     }

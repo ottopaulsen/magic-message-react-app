@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import AppBar from '@material-ui/core/AppBar';
 import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
 
 const styles = theme => ({
     appBar: {

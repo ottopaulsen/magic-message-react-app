@@ -9,6 +9,7 @@ class Auth extends Component {
         user: null,
         loading: true,
         token: null,
+        errorMessage: ''
     }
 
     loadFromLocalStorage = () => {
@@ -32,9 +33,18 @@ class Auth extends Component {
 
     idTokenChanged = (user, tokenChanged) => {
         if (user) {
-            user.getIdToken().then(result => {
-                this.token = result
+            user.getIdToken()
+            .then(result => {
+                // this.token = result
+                this.setState({
+                    errorMessage: '',
+                    token: result,
+                })
                 tokenChanged()
+            })
+            .catch(error => {
+                this.setState({errorMessage: error.message})
+                console.log('Error in getIdToken: ', error.message)
             })
         }
     }

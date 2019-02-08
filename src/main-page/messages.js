@@ -11,18 +11,23 @@ class Messages extends Component {
 
         const self = this
 
-        this.props.db.collection('/screens/' + this.props.screenKey + '/messages')
-        .get()
-        .then(snapshot => {
+        this.unsubscribe = this.props.db.collection('/screens/' + this.props.screenKey + '/messages')
+        .onSnapshot(function(snapshot) {
             let messages = []
             snapshot.forEach(message => {
                 messages.push(message)
             })
             self.setState({messages})
+        }, function(error) {
+            console.log('Error getting messages: ', error)
         })
     }
 
-    render() { 
+    componentWillUnmount = () => {
+        this.unsubscribe()
+    }
+
+    render = () => { 
 
         return ( 
             <div className="message-list">{this.state.messages.map(message => (
