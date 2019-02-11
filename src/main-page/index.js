@@ -7,11 +7,9 @@ import SignInPage from '../signin'
 import MagicScreens from './magicscreens';
 import { Offline, Online } from "react-detect-offline";
 
-
 const lsPrefix = 'Magic-'
 const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
 const getScreensUrl = magicServerUrl + '/screens?dummy=' + Date.now()
-
 
 class App extends Component {
 
@@ -26,6 +24,7 @@ class App extends Component {
             mustSignIn: false,
             mustShowInstructions: false,
             screens: screens,
+            token: null,
         }
         console.log("App constructor")
 
@@ -47,6 +46,7 @@ class App extends Component {
                 this.setState({ auth })
                 user.getIdToken()
                     .then(token => {
+                        this.setState({token})
                         this.fetchScreens(token)
                     })
                     .catch(error => {
@@ -66,7 +66,6 @@ class App extends Component {
     fetchScreens = (token) => {
 
         let self = this
-
         this.setState({ fetchingScreens: true })
 
         const headers = {
@@ -77,7 +76,6 @@ class App extends Component {
         fetch(getScreensUrl, { headers: headers })
             .then(rsp => rsp.json())
             .then(screens => {
-                // const activeScreen = self.state.activeScreen >= screens.length ? 0 : self.state.activeScreen
                 self.setState({ screens: screens })
                 localStorage.setItem(lsPrefix + 'screens', JSON.stringify(screens))
                 self.setState({ fetchingScreens: false })

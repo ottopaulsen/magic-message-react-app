@@ -3,9 +3,6 @@ import Screen from './screen';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import MobileStepper from '@material-ui/core/MobileStepper';
-import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize, bindKeyboard } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
@@ -45,7 +42,7 @@ class MagicScreens extends Component {
     constructor(props) {
         super(props)
         const defaultScreen = parseInt(localStorage.getItem(lsPrefix + 'LastUsedScreen') || '0')
-        this.setState({activeScreen: defaultScreen})
+        this.state.activeScreen = defaultScreen
     }
     
     componentDidMount = () => {
@@ -90,6 +87,36 @@ class MagicScreens extends Component {
         this.setState({ lifetime })
     }
 
+    sendMessage = message => {
+        const self = this
+        const token = this.props.token
+
+        console.log('TO DO: sendMessage må finne riktig token')
+        
+        const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
+        const screenId = this.props.screens[this.state.activeScreen].key
+        const postMessageUrl = magicServerUrl + '/screens/' + screenId + '/messages'
+        const headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': 'Bearer ' + token,
+        }
+        
+        const body = {
+            message: 'this is the message'
+        }
+        console.log('Sending message "', message, '" to ', postMessageUrl, ' using token ', token)
+
+        fetch(postMessageUrl, { headers: headers, method: 'POST' }, body)
+            .then(rsp => rsp.json())
+            .then(screens => {
+                
+            })
+            .catch(error => {
+                console.log('Error fetching screens: ', error)
+            })
+
+    }
+
     render() {
         const { classes, theme, screens } = this.props;
         const { activeScreen } = this.state
@@ -126,7 +153,10 @@ class MagicScreens extends Component {
                 >
                 </VirtualizeSwipeableViews>
                 <LifeTimeSelector lifetime={this.state.lifetime} setLifetime={this.setLifetime} />
-                <WriteMessage lifetime={this.state.lifetime} />
+                <WriteMessage
+                    lifetime={this.state.lifetime}
+                    sendMessage={this.sendMessage}
+                />
             </div>
         );
     }

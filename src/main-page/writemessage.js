@@ -39,6 +39,7 @@ class WriteMessage extends Component {
 
     sendMessage = () => {
         console.log('Sending message: ' + this.state.message)
+        this.props.sendMessage(this.state.message)
         this.setState({message: ''})
     }
 

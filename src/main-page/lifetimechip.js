@@ -12,20 +12,9 @@ const styles = theme => ({
 
 class LifeTimeChip extends Component {
 
-    state = {}
-
-    // constructor(props) {
-    //     super(props)
-    //     // this.elementRef = React.createRef()
-    //     if(this.props.selected) {
-    //         this.props.setSelectedChipElement(React.createRef())
-    //     }
-    // }
-
     handleClick = () => {
         this.props.chipClicked(this.props.chipData.minutes)
     }
-
 
     render() {
         const { classes } = this.props
