@@ -8,6 +8,10 @@ import { virtualize, bindKeyboard } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 import LifeTimeSelector from './lifetimeselector'
 import WriteMessage from './writemessage'
+import Button from '@material-ui/core/Button';
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+
 
 const VirtualizeSwipeableViews = bindKeyboard(virtualize(SwipeableViews));
 
@@ -25,7 +29,7 @@ const styles = theme => ({
     },
     header: {
         display: 'flex',
-        alignItems: 'center',
+        justify: 'center',
         height: 50,
         paddingLeft: theme.spacing.unit * 4,
         backgroundColor: theme.palette.background.default,
@@ -110,7 +114,7 @@ class MagicScreens extends Component {
         console.log('Sending message "', message, '" to ', postMessageUrl, ' using token ', token)
         console.log(body)
 
-        fetch(postMessageUrl, {headers: headers, method: 'POST', body: JSON.stringify(body)})
+        fetch(postMessageUrl, { headers: headers, method: 'POST', body: JSON.stringify(body) })
             .then(rsp => rsp.json())
             .then(rsp => {
                 console.log('Got response: ', rsp)
@@ -119,6 +123,22 @@ class MagicScreens extends Component {
                 console.log('Error sending message: ', error)
             })
 
+    }
+
+    nextScreen = () => {
+        this.setState(state => {
+            if(state.activeScreen < this.props.screens.length - 1) {
+                this.setState({activeScreen: state.activeScreen + 1})
+            }
+        })
+    }
+
+    prevScreen = () => {
+        this.setState(state => {
+            if(state.activeScreen > 0) {
+                this.setState({activeScreen: state.activeScreen - 1})
+            }
+        })
     }
 
     render() {
@@ -133,18 +153,18 @@ class MagicScreens extends Component {
                     position="static"
                     activeStep={activeScreen}
                     className={classes.mobileStepper}
-                // nextButton={
-                //     <Button size="small" onClick={this.nextScreen} disabled={activeScreen === (screens.length - 1)}>
-                //         Next
-                //         {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
-                //     </Button>
-                // }
-                // backButton={
-                //     <Button size="small" onClick={this.prevScreen} disabled={activeScreen === 0}>
-                //         {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
-                //         Back
-                //     </Button>
-                // }
+                    nextButton={
+                        <Button size="small" onClick={this.nextScreen} disabled={activeScreen === (screens.length - 1)}>
+                            Next
+                        {theme.direction === 'rtl' ? <KeyboardArrowLeft /> : <KeyboardArrowRight />}
+                        </Button>
+                    }
+                    backButton={
+                        <Button size="small" onClick={this.prevScreen} disabled={activeScreen === 0}>
+                            {theme.direction === 'rtl' ? <KeyboardArrowRight /> : <KeyboardArrowLeft />}
+                            Back
+                    </Button>
+                    }
                 />
                 <VirtualizeSwipeableViews
                     index={activeScreen}
