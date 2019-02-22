@@ -12,6 +12,7 @@ class Messages extends Component {
         const self = this
 
         this.unsubscribe = this.props.db.collection('/screens/' + this.props.screenKey + '/messages')
+        .orderBy("sentTime", "desc")
         .onSnapshot(function(snapshot) {
             let messages = []
             snapshot.forEach(message => {

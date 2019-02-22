@@ -89,7 +89,6 @@ class MagicScreens extends Component {
 
 
     sendMessage = message => {
-        const self = this
         const token = this.props.token
 
 
