@@ -3,7 +3,6 @@ import React, { Component } from 'react';
 class Message extends Component {
     state = {}
     render() {
-        const confirmed = this.props.message.receipt | false
         const messageClass = "message-message-col" + (this.props.message.receipt ? "" : " not_confirmed")
         return (
             <tr className="message-row">

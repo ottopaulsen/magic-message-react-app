@@ -3,7 +3,8 @@ import Message from './message'
 
 class Messages extends Component {
     state = {
-        messages: []
+        messages: [],
+        timeNow: new Date(),
     }
 
     constructor(props) {
@@ -22,17 +23,26 @@ class Messages extends Component {
             }, function (error) {
                 console.log('Error getting messages: ', error)
             })
+
+        this.interval = setInterval(() => {
+            this.setState({ timeNow: new Date() })
+        }, 5000)
     }
 
     componentWillUnmount = () => {
         this.unsubscribe()
+        clearInterval(this.interval)
+    }
+
+    showMessage = message => {
+        const sentTime = message.sentTime.toDate().valueOf()
+        return ((sentTime + message.validMinutes * 60000) > Date.now())
     }
 
     render = () => {
-
         return (
             <table className="message-list"><tbody>{this.state.messages.map(message => (
-                <Message key={message.id} message={message.data()} />
+                this.showMessage(message.data()) ? (<Message key={message.id} message={message.data()} />) : (null)
             ))}</tbody></table>
         );
     }

@@ -39,26 +39,20 @@ class MainPage extends Component {
         });
 
         this.props.auth.fbAuth().onIdTokenChanged(user => {
-            user.getIdToken()
-            .then(token => {
-                this.setState({token})
-                this.fetchScreens(token)
-            })
-            .catch(error => {
-                console.log('Failed to getIdToken: ', error)
-            })
-
-            // auth.idTokenChanged(user, () => {
-            //     this.setState({ auth })
-            //     user.getIdToken()
-            //         .then(token => {
-            //             this.setState({token})
-            //             this.fetchScreens(token)
-            //         })
-            //         .catch(error => {
-            //             console.log('Failed to getIdToken: ', error)
-            //         })
-            // })
+            if (user) {
+                console.log('Getting token')
+                user.getIdToken()
+                    .then(token => {
+                        console.log('Got token')
+                        this.setState({ token })
+                        this.fetchScreens(token)
+                    })
+                    .catch(error => {
+                        console.log('Failed to getIdToken: ', error)
+                    })
+            } else {
+                this.setState({token: null})
+            }
         });
 
         console.log("MainPage did mount.")
@@ -103,12 +97,13 @@ class MainPage extends Component {
 
         // Decide data part
         let page = <div>Blank page</div>
+        console.log('State: ', this.state)
         if (this.state.mustSignIn) {
             page = <SignInPage auth={this.props.auth} />
         } else if (this.state.mustShowInstructions) {
             page = <InstructionsPage />
         } else if (this.state.screens.length > 0) {
-            page = <MagicScreens screens={this.state.screens} token={this.state.token}/>
+            page = <MagicScreens screens={this.state.screens} token={this.state.token} />
         }
 
         // Decide footer part
