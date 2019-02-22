@@ -11,9 +11,7 @@ const lsPrefix = 'Magic-'
 const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
 const getScreensUrl = magicServerUrl + '/screens?dummy=' + Date.now()
 
-class App extends Component {
-
-    state = {}
+class MainPage extends Component {
 
     constructor(props) {
         super(props)
@@ -26,7 +24,7 @@ class App extends Component {
             screens: screens,
             token: null,
         }
-        console.log("App constructor")
+        console.log("MainPage constructor")
 
     }
 
@@ -34,33 +32,41 @@ class App extends Component {
         this.props.auth.fbAuth().onAuthStateChanged(user => {
             const auth = this.props.auth
             auth.authStateChanged(user)
-            this.setState({ auth })
             this.setState({
                 isAuthenticated: !!user,
+                auth: auth,
             })
         });
 
         this.props.auth.fbAuth().onIdTokenChanged(user => {
-            const auth = this.props.auth
-            auth.idTokenChanged(user, () => {
-                this.setState({ auth })
-                user.getIdToken()
-                    .then(token => {
-                        this.setState({token})
-                        this.fetchScreens(token)
-                    })
-                    .catch(error => {
-                        console.log('Failed to getIdToken: ', error)
-                    })
+            user.getIdToken()
+            .then(token => {
+                this.setState({token})
+                this.fetchScreens(token)
             })
+            .catch(error => {
+                console.log('Failed to getIdToken: ', error)
+            })
+
+            // auth.idTokenChanged(user, () => {
+            //     this.setState({ auth })
+            //     user.getIdToken()
+            //         .then(token => {
+            //             this.setState({token})
+            //             this.fetchScreens(token)
+            //         })
+            //         .catch(error => {
+            //             console.log('Failed to getIdToken: ', error)
+            //         })
+            // })
         });
 
-        console.log("App did mount.")
+        console.log("MainPage did mount.")
     }
 
     componentDidCatch(error, info) {
         this.setState({ hasError: true })
-        console.log('App component did catch error: ', error, info)
+        console.log('MainPage component did catch error: ', error, info)
     }
 
     fetchScreens = (token) => {
@@ -73,9 +79,11 @@ class App extends Component {
             'Authorization': 'Bearer ' + token
         }
 
+        console.log('Fething screens...')
         fetch(getScreensUrl, { headers: headers })
             .then(rsp => rsp.json())
             .then(screens => {
+                console.log('Fetched screens: ', screens)
                 self.setState({ screens: screens })
                 localStorage.setItem(lsPrefix + 'screens', JSON.stringify(screens))
                 self.setState({ fetchingScreens: false })
@@ -100,7 +108,7 @@ class App extends Component {
         } else if (this.state.mustShowInstructions) {
             page = <InstructionsPage />
         } else if (this.state.screens.length > 0) {
-            page = <MagicScreens screens={this.state.screens} />
+            page = <MagicScreens screens={this.state.screens} token={this.state.token}/>
         }
 
         // Decide footer part
@@ -134,6 +142,6 @@ class App extends Component {
         )
     }
 }
-export default App;
+export default MainPage;
 
 

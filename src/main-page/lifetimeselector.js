@@ -65,7 +65,7 @@ class LifeTimeSelector extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root} elevation={0}>
-                <Typography inline="true" className={classes.sectionHeader}>Message lifetime:</Typography>
+                <Typography inline={true} className={classes.sectionHeader}>Message lifetime:</Typography>
                 <GridList className={classes.gridList} cellHeight={30}>
                     {alternatives.map(chip => (
                         <LifeTimeChip

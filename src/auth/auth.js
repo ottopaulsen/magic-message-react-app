@@ -1,15 +1,16 @@
-import React, { Component } from 'react';
-import App from '../main-page'
+// import MainPage from '../main-page'
 
 const lsPrefix = 'AUTH'
 
-class Auth extends Component {
+class Auth {
 
-    state = {
-        user: null,
-        loading: true,
-        token: null,
-        errorMessage: ''
+    user = null
+    loading = true
+    token = null
+    errorMessage = ''
+
+    constructor(fbAuth) {
+        this.firebaseAuth = fbAuth
     }
 
     loadFromLocalStorage = () => {
@@ -31,23 +32,23 @@ class Auth extends Component {
         this.saveToLocalStorage()
     }
 
-    idTokenChanged = (user, tokenChanged) => {
-        if (user) {
-            user.getIdToken()
-            .then(result => {
-                // this.token = result
-                this.setState({
-                    errorMessage: '',
-                    token: result,
-                })
-                tokenChanged()
-            })
-            .catch(error => {
-                this.setState({errorMessage: error.message})
-                console.log('Error in getIdToken: ', error.message)
-            })
-        }
-    }
+    // idTokenChanged = (user, tokenChanged) => {
+    //     if (user) {
+    //         user.getIdToken()
+    //         .then(result => {
+    //             // this.token = result
+    //             this.setState({
+    //                 errorMessage: '',
+    //                 token: result,
+    //             })
+    //             tokenChanged()
+    //         })
+    //         .catch(error => {
+    //             this.setState({errorMessage: error.message})
+    //             console.log('Error in getIdToken: ', error.message)
+    //         })
+    //     }
+    // }
 
     getUser = () => {
         if (this.user) {
@@ -76,14 +77,15 @@ class Auth extends Component {
     }
 
     fbAuth = () => {
-        return this.props.fbAuth
+        return this.firebaseAuth
     }
 
-    render = () => {
-        return (
-            <App auth={this}/>
-        )
-    }
+    // render = () => {
+    //     return (
+    //         // <MainPage auth={this} />
+    //         null
+    //     )
+    // }
 }
 
 export { Auth }

@@ -44,7 +44,7 @@ class MagicScreens extends Component {
         const defaultScreen = parseInt(localStorage.getItem(lsPrefix + 'LastUsedScreen') || '0')
         this.state.activeScreen = defaultScreen
     }
-    
+
     componentDidMount = () => {
         this.handleChangeIndex(this.state.activeScreen)
     }
@@ -65,12 +65,12 @@ class MagicScreens extends Component {
     slideRenderer = params => {
         const { index, key } = params;
         console.log('slideRenderer index = ' + index)
-        if(index === this.state.activeScreen) {
-                return (
-                    <div key={key}>
+        if (index === this.state.activeScreen) {
+            return (
+                <div key={key}>
                     <Screen
                         screen={this.props.screens[mod(index, this.props.screens.length)]}
-                        />
+                    />
                 </div>
             )
         } else {
@@ -87,12 +87,12 @@ class MagicScreens extends Component {
         this.setState({ lifetime })
     }
 
+
     sendMessage = message => {
         const self = this
         const token = this.props.token
 
-        console.log('TO DO: sendMessage må finne riktig token')
-        
+
         const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
         const screenId = this.props.screens[this.state.activeScreen].key
         const postMessageUrl = magicServerUrl + '/screens/' + screenId + '/messages'
@@ -100,19 +100,24 @@ class MagicScreens extends Component {
             'Content-Type': 'application/json; charset=utf-8',
             'Authorization': 'Bearer ' + token,
         }
-        
-        const body = {
-            message: 'this is the message'
-        }
-        console.log('Sending message "', message, '" to ', postMessageUrl, ' using token ', token)
 
-        fetch(postMessageUrl, { headers: headers, method: 'POST' }, body)
+        const body = {
+            message: message,
+            sentBy: "ottpau@gmail.com",
+            sentTime: new Date(),
+            lifetime: 15,
+        }
+
+        console.log('Sending message "', message, '" to ', postMessageUrl, ' using token ', token)
+        console.log(body)
+
+        fetch(postMessageUrl, {headers: headers, method: 'POST', body: JSON.stringify(body)})
             .then(rsp => rsp.json())
-            .then(screens => {
-                
+            .then(rsp => {
+                console.log('Got response: ', rsp)
             })
             .catch(error => {
-                console.log('Error fetching screens: ', error)
+                console.log('Error sending message: ', error)
             })
 
     }
