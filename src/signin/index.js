@@ -32,9 +32,9 @@ class SignInPage extends React.Component {
         console.log("SignIn render")
         return (
                     <div>
-                        <h1>My App</h1>
+                        <h1>Sign in</h1>
                         <p>Please sign-in:</p>
-                        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={this.props.auth.fbAuth} />
+                        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={this.props.auth.fbAuth()} />
                     </div>
         );
     }

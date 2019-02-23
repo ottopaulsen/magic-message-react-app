@@ -106,9 +106,9 @@ class MagicScreens extends Component {
 
         const body = {
             message: message,
-            sentBy: "ottpau@gmail.com",
+            sentBy: this.props.auth.userEmail(),
             sentTime: new Date(),
-            lifetime: 15,
+            lifetime: this.state.lifetime,
         }
 
         console.log('Sending message "', message, '" to ', postMessageUrl, ' using token ', token)

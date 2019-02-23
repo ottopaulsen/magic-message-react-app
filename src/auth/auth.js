@@ -1,4 +1,3 @@
-// import MainPage from '../main-page'
 
 const lsPrefix = 'AUTH'
 
@@ -15,7 +14,13 @@ class Auth {
 
     loadFromLocalStorage = () => {
         this.user = JSON.parse(localStorage.getItem(lsPrefix + 'user'));
-        console.log("Loaded user from local storage ", this.user)
+        if(this.user){
+            console.log("Loaded user from local storage ", this.user)
+            return true
+        } else {
+            console.log("No user in local storage. Must sign in.")
+            return false
+        }
     }
 
     saveToLocalStorage = () => {
@@ -51,12 +56,26 @@ class Auth {
     // }
 
     getUser = () => {
+        return this.fbAuth().currentUser
+    }
+
+    userDisplayName = () => {
         if (this.user) {
             return this.user.displayName
         } else {
             return 'Not logged in'
         }
     }
+
+    userEmail = () => {
+        // return "ottpau@gmail.com"
+		if (this.isAuthenticated()) {
+			return this.getUser().email;
+		} else {
+			return 'not authenticated';
+		}
+	}
+
 
     getToken = () => {
         return this.token

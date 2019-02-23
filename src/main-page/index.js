@@ -29,6 +29,7 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
+        this.setState({mustSignIn: !this.props.auth.loadFromLocalStorage()})
         this.props.auth.fbAuth().onAuthStateChanged(user => {
             const auth = this.props.auth
             auth.authStateChanged(user)
@@ -103,7 +104,7 @@ class MainPage extends Component {
         } else if (this.state.mustShowInstructions) {
             page = <InstructionsPage />
         } else if (this.state.screens.length > 0) {
-            page = <MagicScreens screens={this.state.screens} token={this.state.token} />
+            page = <MagicScreens auth={this.props.auth} screens={this.state.screens} token={this.state.token} />
         }
 
         // Decide footer part
@@ -113,7 +114,7 @@ class MainPage extends Component {
         } else if (this.state.fetchingScreens) {
             footerText = "Fetching screens..."
         } else if (this.state.screens.length > 0) {
-            footerText = "Signed in as " + this.props.auth.getUser()
+            footerText = "Signed in as " + this.props.auth.userDisplayName()
         }
 
         return (
