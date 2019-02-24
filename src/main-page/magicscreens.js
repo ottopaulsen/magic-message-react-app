@@ -74,6 +74,7 @@ class MagicScreens extends Component {
                 <div key={key}>
                     <Screen
                         screen={this.props.screens[mod(index, this.props.screens.length)]}
+                        deleteMessage={this.deleteMessage}
                     />
                 </div>
             )
@@ -94,7 +95,6 @@ class MagicScreens extends Component {
 
     sendMessage = message => {
         const token = this.props.token
-
 
         const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
         const screenId = this.props.screens[this.state.activeScreen].key
@@ -125,18 +125,42 @@ class MagicScreens extends Component {
 
     }
 
+    deleteMessage = mesageId => {
+
+        const token = this.props.token
+
+        const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
+        const screenId = this.props.screens[this.state.activeScreen].key
+        const deleteMessageUrl = magicServerUrl + '/screens/' + screenId + '/messages/' + mesageId
+        const headers = {
+            'Content-Type': 'application/json; charset=utf-8',
+            'Authorization': 'Bearer ' + token,
+        }
+
+        console.log('Deleting message ', deleteMessageUrl, ' using token ', token)
+
+        fetch(deleteMessageUrl, { headers: headers, method: 'DELETE' })
+            // .then(rsp => rsp.json())
+            .then(rsp => {
+                console.log('Got response: ', rsp)
+            })
+            .catch(error => {
+                console.log('Error deleting message: ', error)
+            })
+    }
+
     nextScreen = () => {
         this.setState(state => {
-            if(state.activeScreen < this.props.screens.length - 1) {
-                this.setState({activeScreen: state.activeScreen + 1})
+            if (state.activeScreen < this.props.screens.length - 1) {
+                this.setState({ activeScreen: state.activeScreen + 1 })
             }
         })
     }
 
     prevScreen = () => {
         this.setState(state => {
-            if(state.activeScreen > 0) {
-                this.setState({activeScreen: state.activeScreen - 1})
+            if (state.activeScreen > 0) {
+                this.setState({ activeScreen: state.activeScreen - 1 })
             }
         })
     }

@@ -7,6 +7,8 @@ const styles = theme => ({
     appBar: {
         top: 'auto',
         bottom: 0,
+        maxWidth: 400,
+        left: 0,
     },
 });
 

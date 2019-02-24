@@ -2,6 +2,7 @@
   display: flex;
   flex-wrap: nowrap;
   flex-direction: column;
+  max-width: 400px;
 }
 
 .header {
@@ -87,6 +88,11 @@ tr {
 
 .not_confirmed {
     color: rgb(100, 100, 100);
+}
+
+.message-icon-delete {
+  color: rgb(200, 200, 200);
+  size: 60%;
 }
 
 

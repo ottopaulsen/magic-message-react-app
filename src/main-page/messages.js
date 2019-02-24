@@ -42,7 +42,7 @@ class Messages extends Component {
     render = () => {
         return (
             <table className="message-list"><tbody>{this.state.messages.map(message => (
-                this.showMessage(message.data()) ? (<Message key={message.id} message={message.data()} />) : (null)
+                this.showMessage(message.data()) ? (<Message key={message.id} message={message} deleteMessage={this.props.deleteMessage}/>) : (null)
             ))}</tbody></table>
         );
     }
