@@ -31,11 +31,11 @@ class SignInPage extends React.Component {
     render() {
         console.log("SignIn render")
         return (
-                    <div>
-                        <h1>Sign in</h1>
-                        <p>Please sign-in:</p>
-                        <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={this.props.auth.fbAuth()} />
-                    </div>
+            <div>
+                <h1>Sign in</h1>
+                <p>Please sign-in:</p>
+                <StyledFirebaseAuth uiConfig={uiConfig} firebaseAuth={this.props.auth.fbAuth()} />
+            </div>
         );
     }
 }

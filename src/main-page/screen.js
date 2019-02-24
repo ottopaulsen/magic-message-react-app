@@ -6,10 +6,6 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from '@material-ui/core';
 
 const styles = theme => ({
-    root: {
-        paddingLeft: '10px',
-        paddingRight: '10px',
-    },
     paper: {
         ...theme.mixins.gutters(),
         paddingTop: theme.spacing.unit * 2,
