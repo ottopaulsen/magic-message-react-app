@@ -105,7 +105,7 @@ class MainPage extends Component {
                 token={this.state.token}
                 messageService={this.messageService}
             />
-        }
+        } 
 
         // Decide footer part
         let footerText = ""
@@ -118,16 +118,16 @@ class MainPage extends Component {
         }
 
         return (
-            <div>
+            <div className="flex-container">
                 {errorText}
-                <div className="flex-container">
+                <div className="flex-codntainer">
                     <Header />
                 </div>
                 <Online>
-                    <div className="flex-container">
+                    <div className="flex-codntainer">
                         {page}
                     </div>
-                    <div className="flex-container">
+                    <div className="flex-codntainer">
                         <Footer text={footerText} />
                     </div>
                 </Online>

@@ -54,7 +54,6 @@ class WriteMessage extends Component {
                     value={this.state.message}
                     onChange={this.handleChange}
                     onKeyPress={(ev) => {
-                        console.log(`Pressed keyCode ${ev.key}`);
                         if (ev.key === 'Enter') {
                             this.sendMessage()
                             ev.preventDefault();

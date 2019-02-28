@@ -39,7 +39,7 @@ const styles = theme => ({
     gridList: {
         flexWrap: 'nowrap',
         transform: 'translateZ(0)',
-        cellHeight: 50,
+        overflowX: 'auto',
     },
     sectionHeader: {
         textAlign: 'left',
