@@ -4,8 +4,6 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import { Button, TextField } from '@material-ui/core';
 
-
-
 const styles = theme => ({
     root: {
         display: 'flex',
@@ -27,9 +25,8 @@ const styles = theme => ({
 });
 
 
-
 class WriteMessage extends Component {
-    state = {message: ''}
+    state = { message: '' }
 
     handleChange = event => {
         this.setState({
@@ -39,8 +36,8 @@ class WriteMessage extends Component {
 
     sendMessage = () => {
         console.log('Sending message: ' + this.state.message)
-        this.props.sendMessage(this.state.message)
-        this.setState({message: ''})
+        this.props.sendMessage(this.props.screenId, this.state.message, this.props.lifetime)
+        this.setState({ message: '' })
     }
 
     render = () => {
@@ -56,12 +53,19 @@ class WriteMessage extends Component {
                     fullWidth={false}
                     value={this.state.message}
                     onChange={this.handleChange}
+                    onKeyPress={(ev) => {
+                        console.log(`Pressed keyCode ${ev.key}`);
+                        if (ev.key === 'Enter') {
+                            this.sendMessage()
+                            ev.preventDefault();
+                        }
+                    }}
                 />
-                <Button 
-                    style={{ container: { height: 10} }} 
-                    variant="contained" 
-                    size="small" 
-                    color='primary' 
+                <Button
+                    style={{ container: { height: 10 } }}
+                    variant="contained"
+                    size="small"
+                    color='primary'
                     className={classes.button}
                     onClick={this.sendMessage}
                 >Send</Button>

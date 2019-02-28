@@ -6,15 +6,15 @@ import InstructionsPage from '../instructions'
 import SignInPage from '../signin'
 import MagicScreens from './magicscreens';
 import { Offline, Online } from "react-detect-offline";
+import MessageService from '../services/messageservice';
 
 const lsPrefix = 'Magic-'
-const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
-const getScreensUrl = magicServerUrl + '/screens?dummy=' + Date.now()
 
 class MainPage extends Component {
 
     constructor(props) {
         super(props)
+        this.messageService = new MessageService(this.props.auth)
         const screens = JSON.parse(localStorage.getItem(lsPrefix + 'screens')) || []
         this.state = {
             fetchingScreens: false,
@@ -29,7 +29,7 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
-        this.setState({mustSignIn: !this.props.auth.loadFromLocalStorage()})
+        this.setState({ mustSignIn: !this.props.auth.loadFromLocalStorage() })
         this.props.auth.fbAuth().onAuthStateChanged(user => {
             const auth = this.props.auth
             auth.authStateChanged(user)
@@ -46,13 +46,15 @@ class MainPage extends Component {
                     .then(token => {
                         console.log('Got token')
                         this.setState({ token })
+                        this.props.auth.setToken(token)
                         this.fetchScreens(token)
                     })
                     .catch(error => {
                         console.log('Failed to getIdToken: ', error)
                     })
             } else {
-                this.setState({token: null})
+                this.setState({ token: null })
+                this.props.auth.setToken(null)
             }
         });
 
@@ -65,23 +67,16 @@ class MainPage extends Component {
     }
 
     fetchScreens = (token) => {
-
-        let self = this
+        const self = this
         this.setState({ fetchingScreens: true })
-
-        const headers = {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': 'Bearer ' + token
-        }
-
-        console.log('Fething screens...')
-        fetch(getScreensUrl, { headers: headers })
-            .then(rsp => rsp.json())
+        this.messageService.getScreens()
             .then(screens => {
                 console.log('Fetched screens: ', screens)
-                self.setState({ screens: screens })
+                self.setState({
+                    screens: screens,
+                    fetchingScreens: false
+                })
                 localStorage.setItem(lsPrefix + 'screens', JSON.stringify(screens))
-                self.setState({ fetchingScreens: false })
             })
             .catch(error => {
                 console.log('Error fetching screens: ', error)
@@ -104,7 +99,12 @@ class MainPage extends Component {
         } else if (this.state.mustShowInstructions) {
             page = <InstructionsPage />
         } else if (this.state.screens.length > 0) {
-            page = <MagicScreens auth={this.props.auth} screens={this.state.screens} token={this.state.token} />
+            page = <MagicScreens
+                auth={this.props.auth}
+                screens={this.state.screens}
+                token={this.state.token}
+                messageService={this.messageService}
+            />
         }
 
         // Decide footer part

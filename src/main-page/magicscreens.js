@@ -76,7 +76,7 @@ class MagicScreens extends Component {
                 <div key={key}>
                     <Screen
                         screen={this.props.screens[mod(index, this.props.screens.length)]}
-                        deleteMessage={this.deleteMessage}
+                        deleteMessage={this.props.messageService.deleteMessage}
                     />
                 </div>
             )
@@ -92,63 +92,6 @@ class MagicScreens extends Component {
         console.log('setLifetime = ', lifetime)
         localStorage.setItem(this.lsKeyLifetime, lifetime)
         this.setState({ lifetime })
-    }
-
-
-    sendMessage = message => {
-        const token = this.props.token
-
-        const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
-        const screenId = this.props.screens[this.state.activeScreen].key
-        const postMessageUrl = magicServerUrl + '/screens/' + screenId + '/messages'
-        const headers = {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': 'Bearer ' + token,
-        }
-
-        const body = {
-            message: message,
-            sentBy: this.props.auth.userEmail(),
-            sentTime: new Date(),
-            lifetime: this.state.lifetime,
-        }
-
-        console.log('Sending message "', message, '" to ', postMessageUrl, ' using token ', token)
-        console.log(body)
-
-        fetch(postMessageUrl, { headers: headers, method: 'POST', body: JSON.stringify(body) })
-            .then(rsp => rsp.json())
-            .then(rsp => {
-                console.log('Got response: ', rsp)
-            })
-            .catch(error => {
-                console.log('Error sending message: ', error)
-            })
-
-    }
-
-    deleteMessage = mesageId => {
-
-        const token = this.props.token
-
-        const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL
-        const screenId = this.props.screens[this.state.activeScreen].key
-        const deleteMessageUrl = magicServerUrl + '/screens/' + screenId + '/messages/' + mesageId
-        const headers = {
-            'Content-Type': 'application/json; charset=utf-8',
-            'Authorization': 'Bearer ' + token,
-        }
-
-        console.log('Deleting message ', deleteMessageUrl, ' using token ', token)
-
-        fetch(deleteMessageUrl, { headers: headers, method: 'DELETE' })
-            // .then(rsp => rsp.json())
-            .then(rsp => {
-                console.log('Got response: ', rsp)
-            })
-            .catch(error => {
-                console.log('Error deleting message: ', error)
-            })
     }
 
     nextScreen = () => {
@@ -168,7 +111,7 @@ class MagicScreens extends Component {
     }
 
     render() {
-        const { classes, theme, screens } = this.props;
+        const { classes, theme, screens, messageService } = this.props;
         const { activeScreen } = this.state
 
         return (
@@ -205,7 +148,8 @@ class MagicScreens extends Component {
                 <LifeTimeSelector lifetime={this.state.lifetime} setLifetime={this.setLifetime} />
                 <WriteMessage
                     lifetime={this.state.lifetime}
-                    sendMessage={this.sendMessage}
+                    sendMessage={messageService.sendMessage}
+                    screenId={screens[activeScreen].key}
                 />
             </div>
         );

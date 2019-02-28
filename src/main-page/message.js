@@ -6,7 +6,7 @@ class Message extends Component {
 
     deleteMessage = () => {
         console.log('Deleting message id ', this.props.message.id)
-        this.props.deleteMessage(this.props.message.id)
+        this.props.deleteMessage(this.props.message.ref.path)
     }
 
     render = () => {

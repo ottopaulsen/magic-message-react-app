@@ -81,6 +81,10 @@ class Auth {
         return this.token
     }
 
+    setToken = token => {
+        this.token = token
+    }
+
     isAuthenticated = () => {
         return !!this.user
     }
