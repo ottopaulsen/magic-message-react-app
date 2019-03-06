@@ -48,7 +48,8 @@ class WriteMessage extends Component {
                     id="message-input"
                     label="Message"
                     className={classes.textField}
-                    variant="filled"
+                    variant="outlined"
+                    placeholder="Write your message text here"
                     autoFocus={true}
                     fullWidth={false}
                     value={this.state.message}
