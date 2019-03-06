@@ -134,4 +134,4 @@ export function unregister() {
   }
 }
 
-// register()
+register()
