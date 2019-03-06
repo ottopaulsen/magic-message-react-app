@@ -1,3 +1,37 @@
+
+# Magic Message App - React
+
+This is the React based app for my MMM-MessageToScreen module, which is a module for MagicMirror. See my [magic](https://github.com/ottopaulsen/magic) repository for more information.
+
+The app is used to send messages to the magic mirror module.
+
+I have two versions of the app. One with Angular (and a little Ionix´c) and one with React.
+
+## Run locally
+
+´´´
+npm start
+´´´
+
+## Deploy
+
+npm run build
+firebase deploy --only hosting
+
+
+## Environmant variables
+
+The `.env.dummy` file contains the environment variables you need.
+Copy it to a `.env.development` file and a `.env.production` file and enter the correct values fount from your firebase console.
+
+
+
+
+
+
+
+# Original create-react-app README content
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
