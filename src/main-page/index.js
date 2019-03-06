@@ -7,8 +7,16 @@ import SignInPage from '../signin'
 import MagicScreens from './magicscreens';
 import { Offline, Online } from "react-detect-offline";
 import MessageService from '../services/messageservice';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
 
 const lsPrefix = 'Magic-'
+
+const styles = theme => ({
+    mainPage: {
+         width: 400,
+    },
+});
 
 class MainPage extends Component {
 
@@ -31,6 +39,7 @@ class MainPage extends Component {
     componentDidMount() {
         this.setState({ mustSignIn: !this.props.auth.loadFromLocalStorage() })
         this.props.auth.fbAuth().onAuthStateChanged(user => {
+            console.log('Auth state changed, user = ', user)
             const auth = this.props.auth
             auth.authStateChanged(user)
             this.setState({
@@ -44,7 +53,7 @@ class MainPage extends Component {
                 console.log('Getting token')
                 user.getIdToken()
                     .then(token => {
-                        console.log('Got token')
+                        console.log('Got token: ', token)
                         this.setState({ token })
                         this.props.auth.setToken(token)
                         this.fetchScreens(token)
@@ -53,6 +62,7 @@ class MainPage extends Component {
                         console.log('Failed to getIdToken: ', error)
                     })
             } else {
+                console.log('idTokenChanged - no user')
                 this.setState({ token: null })
                 this.props.auth.setToken(null)
             }
@@ -83,7 +93,14 @@ class MainPage extends Component {
             })
     }
 
+    signOut = () => {
+        this.props.auth.signOut()
+        this.setState({mustSignIn: true, isAuthenticated: false})
+    }
+
     render = () => {
+
+        const { classes } = this.props;
 
 
         let errorText = ""
@@ -105,7 +122,7 @@ class MainPage extends Component {
                 token={this.state.token}
                 messageService={this.messageService}
             />
-        } 
+        }
 
         // Decide footer part
         let footerText = ""
@@ -118,26 +135,26 @@ class MainPage extends Component {
         }
 
         return (
-            <div className="flex-container">
-                {errorText}
-                <div className="flex-codntainer">
+            <Grid container
+                direction="column"
+                alignItems="center"
+                justify="center"
+            >
+                <div className={classes.mainPage}>
+                    {errorText}
                     <Header />
-                </div>
-                <Online>
-                    <div className="flex-codntainer">
+                    <Online>
                         {page}
-                    </div>
-                    <div className="flex-codntainer">
-                        <Footer text={footerText} />
-                    </div>
-                </Online>
-                <Offline>
-                    <p>Your internet connection seems to be down</p>
-                </Offline>
-            </div>
+                        <Footer text={footerText} signOut={this.signOut}/>
+                    </Online>
+                    <Offline>
+                        <p>Your internet connection seems to be down</p>
+                    </Offline>
+                </div>
+            </Grid>
         )
     }
 }
-export default MainPage;
+export default withStyles(styles)(MainPage);
 
 

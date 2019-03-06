@@ -18,7 +18,6 @@ class MessageService {
                 'Authorization': 'Bearer ' + token
             }
 
-            console.log('Fething screens...')
             fetch(getScreensUrl, { headers: headers })
                 .then(function (rsp) { resolve(rsp.json()) })
                 .catch(error => {

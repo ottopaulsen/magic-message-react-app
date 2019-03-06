@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
 import Message from './message'
+import { withStyles } from '@material-ui/core/styles';
+
+const styles = theme => ({
+    messageList: {
+    },
+});
+
 
 class Messages extends Component {
     state = {
@@ -48,4 +55,4 @@ class Messages extends Component {
     }
 }
 
-export default Messages;
+export default withStyles(styles)(Messages);

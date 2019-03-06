@@ -33,7 +33,7 @@ class Screen extends Component {
                         {screen.name}
                     </Typography>
                     <FirebaseContext.Consumer>
-                        {firebase => <Messages screenKey={screen.key} db={firebase.db} deleteMessage={this.props.deleteMessage}/>}
+                        {firebase => <Messages screenKey={screen.key} db={firebase.db} deleteMessage={this.props.deleteMessage} />}
                     </FirebaseContext.Consumer>
                 </Paper>
             </div>

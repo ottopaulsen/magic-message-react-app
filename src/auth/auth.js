@@ -1,4 +1,3 @@
-
 const lsPrefix = 'AUTH'
 
 class Auth {
@@ -14,7 +13,7 @@ class Auth {
 
     loadFromLocalStorage = () => {
         this.user = JSON.parse(localStorage.getItem(lsPrefix + 'user'));
-        if(this.user){
+        if (this.user) {
             console.log("Loaded user from local storage ", this.user)
             return true
         } else {
@@ -37,24 +36,6 @@ class Auth {
         this.saveToLocalStorage()
     }
 
-    // idTokenChanged = (user, tokenChanged) => {
-    //     if (user) {
-    //         user.getIdToken()
-    //         .then(result => {
-    //             // this.token = result
-    //             this.setState({
-    //                 errorMessage: '',
-    //                 token: result,
-    //             })
-    //             tokenChanged()
-    //         })
-    //         .catch(error => {
-    //             this.setState({errorMessage: error.message})
-    //             console.log('Error in getIdToken: ', error.message)
-    //         })
-    //     }
-    // }
-
     getUser = () => {
         return this.fbAuth().currentUser
     }
@@ -69,12 +50,12 @@ class Auth {
 
     userEmail = () => {
         // return "ottpau@gmail.com"
-		if (this.isAuthenticated()) {
-			return this.getUser().email;
-		} else {
-			return 'not authenticated';
-		}
-	}
+        if (this.isAuthenticated()) {
+            return this.getUser().email;
+        } else {
+            return 'not authenticated';
+        }
+    }
 
 
     getToken = () => {
@@ -86,13 +67,13 @@ class Auth {
     }
 
     isAuthenticated = () => {
-        return !!this.user
+        return !!this.getUser()
     }
 
     signOut = () => {
-        console.log("signOut")
+        console.log("Auth signOut")
         this.clearFromLocalStorage()
-        this.props.fbAuth.signOut()
+        this.fbAuth().signOut()
     }
 
     isLoading = () => {
@@ -102,13 +83,6 @@ class Auth {
     fbAuth = () => {
         return this.firebaseAuth
     }
-
-    // render = () => {
-    //     return (
-    //         // <MainPage auth={this} />
-    //         null
-    //     )
-    // }
 }
 
 export { Auth }

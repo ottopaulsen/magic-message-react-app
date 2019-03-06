@@ -19,7 +19,6 @@ const lsPrefix = 'Magic-'
 
 const styles = theme => ({
     root: {
-        maxWidth: 400,
         flexGrow: 1,
         paddingLeft: 10,
         paddingRight: 10,
