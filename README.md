@@ -5,7 +5,7 @@ This is the React based app for my MMM-MessageToScreen module, which is a module
 
 The app is used to send messages to the magic mirror module.
 
-I have two versions of the app. One with Angular (and a little Ionix´c) and one with React.
+I have two versions of the app. One with Angular and one with React.
 
 ## Install development environment
 
