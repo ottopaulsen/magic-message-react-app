@@ -19,7 +19,6 @@ class Messages extends Component {
                 snapshot.forEach(message => { messages.push(message) })
                 self.setState({ messages })
             }, function (error) {
-                console.log('Error getting messages: ', error)
             })
         this.interval = setInterval(() => { this.setState({ timeNow: new Date() }) }, 5000)
     }

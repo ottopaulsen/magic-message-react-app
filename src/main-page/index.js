@@ -55,7 +55,6 @@ class MainPage extends Component {
                         this.fetchScreens(token)
                     })
                     .catch(error => {
-                        console.log('Failed to getIdToken: ', error)
                     })
             } else {
                 this.setState({ token: null })
@@ -66,7 +65,6 @@ class MainPage extends Component {
 
     componentDidCatch(error, info) {
         this.setState({ hasError: true })
-        console.log('MainPage component did catch error: ', error, info)
     }
 
     fetchScreens = (token) => {
@@ -87,7 +85,6 @@ class MainPage extends Component {
                 }
             })
             .catch(error => {
-                console.log('Error fetching screens: ', error)
             })
     }
 

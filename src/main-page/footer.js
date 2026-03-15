@@ -27,13 +27,11 @@ class Footer extends Component {
     state = {}
 
     signOut = () => {
-        console.log("Logging out")
         this.props.signOut()
     }
 
     render = () => {
         const { classes } = this.props;
-        console.log("Footer render")
         return (
             <AppBar position="fixed" color="default" sx={{ top: 'auto', bottom: 0, backgroundColor: 'white' }}>
                 <table width="100%">

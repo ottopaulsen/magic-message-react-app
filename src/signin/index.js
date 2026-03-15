@@ -15,7 +15,6 @@ const uiConfig = {
 
 class SignInPage extends React.Component {
     render() {
-        console.log("SignIn render")
         return (
             <div>
                 <h1>Sign in</h1>

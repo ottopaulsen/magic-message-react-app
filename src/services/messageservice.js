@@ -42,16 +42,6 @@ class MessageService {
       lifetime: lifetime,
     };
 
-    console.log(
-      'Sending message "',
-      message,
-      '" to ',
-      postMessageUrl,
-      " using token ",
-      token
-    );
-    console.log(body);
-
     fetch(postMessageUrl, {
       headers: headers,
       method: "POST",
@@ -60,10 +50,8 @@ class MessageService {
     })
       .then((rsp) => rsp.json())
       .then((rsp) => {
-        console.log("Got response: ", rsp);
       })
       .catch((error) => {
-        console.log("Error sending message: ", error);
       });
   };
 
@@ -75,15 +63,11 @@ class MessageService {
       Authorization: "Bearer " + token,
     };
 
-    console.log("Deleting message ", deleteMessageUrl, " using token ", token);
-
     fetch(deleteMessageUrl, { headers: headers, method: "DELETE" })
       // .then(rsp => rsp.json())
       .then((rsp) => {
-        console.log("Got response: ", rsp);
       })
       .catch((error) => {
-        console.log("Error deleting message: ", error);
       });
   };
 }

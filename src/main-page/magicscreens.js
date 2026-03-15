@@ -57,20 +57,17 @@ class MagicScreens extends Component {
 
     handleChangeIndex = index => {
         const activeScreen = mod(index, this.props.screens.length)
-        console.log('handleChangeIndex activeScreen = ', activeScreen)
         this.lsKeyLifetime = lsPrefix + 'lifetime-' + this.props.screens[activeScreen].name
         let lifetime = parseInt(localStorage.getItem(this.lsKeyLifetime) || "1", 10)
         if (isNaN(lifetime)) {
             lifetime = 720
         }
-        console.log('handleChangeIndex activeScreen = ', activeScreen, ' lifetime = ', lifetime)
         this.setState({ activeScreen, lifetime });
         localStorage.setItem(lsPrefix + 'LastUsedScreen', activeScreen)
     };
 
     slideRenderer = params => {
         const { index, key } = params;
-        console.log('slideRenderer index = ' + index)
         if (index === this.state.activeScreen) {
             return (
                 <div key={key}>
@@ -89,7 +86,6 @@ class MagicScreens extends Component {
     }
 
     setLifetime = lifetime => {
-        console.log('setLifetime = ', lifetime)
         localStorage.setItem(this.lsKeyLifetime, lifetime)
         this.setState({ lifetime })
     }

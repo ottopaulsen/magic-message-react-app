@@ -14,10 +14,8 @@ class Auth {
     loadFromLocalStorage = () => {
         this.user = JSON.parse(localStorage.getItem(lsPrefix + 'user'));
         if (this.user) {
-            console.log("Loaded user from local storage ", this.user)
             return true
         } else {
-            console.log("No user in local storage. Must sign in.")
             return false
         }
     }
@@ -71,7 +69,6 @@ class Auth {
     }
 
     signOut = () => {
-        console.log("Auth signOut")
         this.clearFromLocalStorage()
         this.fbAuth().signOut()
     }
