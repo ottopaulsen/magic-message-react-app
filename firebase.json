@@ -1,5 +1,6 @@
 {
   "hosting": {
+    "target": "rx",
     "public": "build",
     "ignore": [
       "firebase.json",
