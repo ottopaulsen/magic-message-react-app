@@ -31,6 +31,7 @@ class WriteMessage extends Component {
                     variant="outlined"
                     placeholder="Write your message text here"
                     autoFocus={true}
+                    autoComplete="off"
                     value={this.state.message}
                     onChange={this.handleChange}
                     onKeyDown={(ev) => {
