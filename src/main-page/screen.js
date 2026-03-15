@@ -1,29 +1,27 @@
 import React, { Component } from 'react'
 import Messages from './messages'
 import { FirebaseContext } from '../firebase'
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
-import { Typography } from '@material-ui/core';
+import Paper from '@mui/material/Paper';
+import { withStyles } from '@mui/styles';
+import { Typography } from '@mui/material';
 
 const styles = theme => ({
     paper: {
-        ...theme.mixins.gutters(),
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
-        paddingLeft: theme.spacing.unit * 2,
-        paddingRight: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
+        paddingLeft: theme.spacing(2),
+        paddingRight: theme.spacing(2),
         background: "#212121",
         color: "#dddddd",
         height: "250px",
     },
     screenName: {
         color: "#dddddd",
-        paddingBottom: theme.spacing.unit * 2,
+        paddingBottom: theme.spacing(2),
     }
 });
 
 class Screen extends Component {
-
     render() {
         const { classes, screen } = this.props;
         return (
@@ -40,6 +38,5 @@ class Screen extends Component {
         )
     }
 }
-
 
 export default withStyles(styles, { withTheme: true })(Screen);

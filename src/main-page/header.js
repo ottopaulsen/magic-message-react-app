@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import Typography from '@material-ui/core/Typography';
-import 'typeface-monda';
+import Typography from '@mui/material/Typography';
+import '@fontsource/monda';
 
 class Header extends Component {
     state = {}

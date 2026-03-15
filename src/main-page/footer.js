@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
-import AppBar from '@material-ui/core/AppBar';
-import { withStyles } from '@material-ui/core/styles';
+import AppBar from '@mui/material/AppBar';
+import { withStyles } from '@mui/styles';
 import PropTypes from 'prop-types';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 import Icon from '@mdi/react'
 import { mdiLogout } from '@mdi/js'
 
@@ -11,7 +11,6 @@ const styles = theme => ({
     appBar: {
         top: 'auto',
         bottom: 0,
-        // maxWidth: 400,
         left: 0,
     },
     footerText: {

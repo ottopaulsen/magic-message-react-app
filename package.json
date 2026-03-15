@@ -3,25 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^3.9.2",
-    "@material-ui/icons": "^3.0.2",
-    "@material/card": "^2.1.1",
-    "@mdi/font": "^3.5.95",
-    "@mdi/js": "^3.5.95",
-    "@mdi/react": "^1.1.0",
-    "firebase": "^6.0.2",
-    "firebaseui": "^3.5.1",
-    "import": "0.0.6",
-    "material-design-icons": "^3.0.1",
-    "react": "^16.7.0",
-    "react-detect-offline": "^2.1.2",
-    "react-dom": "^16.7.0",
-    "react-firebaseui": "^3.1.2",
-    "react-request": "^3.1.2",
-    "react-scripts": "^3.0.1",
-    "react-swipeable-views": "^0.13.0",
-    "react-tiny-virtual-list": "^2.2.0",
-    "typeface-monda": "0.0.54"
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.0",
+    "@fontsource/monda": "^5.0.0",
+    "@mdi/font": "^7.4.47",
+    "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
+    "@mui/icons-material": "^5.16.14",
+    "@mui/material": "^5.16.14",
+    "@mui/styles": "^5.16.14",
+    "ajv": "^8.18.0",
+    "firebase": "^12.10.0",
+    "firebaseui": "^6.1.0",
+    "prop-types": "^15.8.1",
+    "react": "^18.3.1",
+    "react-detect-offline": "^2.4.5",
+    "react-dom": "^18.3.1",
+    "react-firebaseui": "^6.0.0",
+    "react-scripts": "^5.0.1",
+    "react-swipeable-views": "^0.14.0",
+    "react-swipeable-views-core": "^0.14.0",
+    "react-swipeable-views-utils": "^0.14.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,5 +39,11 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "overrides": {
+    "react-swipeable-views": {
+      "react": "^18.0.0",
+      "react-dom": "^18.0.0"
+    }
+  }
 }

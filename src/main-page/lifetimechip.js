@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { withStyles } from '@material-ui/core/styles';
-import Chip from '@material-ui/core/Chip';
+import { withStyles } from '@mui/styles';
+import Chip from '@mui/material/Chip';
 import PropTypes from 'prop-types';
 
 const styles = theme => ({
     chip: {
-        margin: theme.spacing.unit / 2,
+        margin: theme.spacing(0.5),
     },
 });
 

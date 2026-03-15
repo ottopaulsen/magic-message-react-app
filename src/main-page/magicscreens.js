@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import Screen from './screen';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
-import MobileStepper from '@material-ui/core/MobileStepper';
+import { withStyles } from '@mui/styles';
+import MobileStepper from '@mui/material/MobileStepper';
 import SwipeableViews from 'react-swipeable-views';
 import { virtualize, bindKeyboard } from 'react-swipeable-views-utils';
 import { mod } from 'react-swipeable-views-core';
 import LifeTimeSelector from './lifetimeselector'
 import WriteMessage from './writemessage'
-import Button from '@material-ui/core/Button';
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
+import Button from '@mui/material/Button';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 
 
 const VirtualizeSwipeableViews = bindKeyboard(virtualize(SwipeableViews));
@@ -24,15 +24,13 @@ const styles = theme => ({
         paddingRight: 10,
     },
     paper: {
-        ...theme.mixins.gutters(),
-        paddingTop: theme.spacing.unit * 2,
-        paddingBottom: theme.spacing.unit * 2,
+        paddingTop: theme.spacing(2),
+        paddingBottom: theme.spacing(2),
     },
     header: {
         display: 'flex',
         justify: 'center',
         height: 50,
-        // paddingLeft: theme.spacing.unit * 4,
         backgroundColor: theme.palette.background.default,
     },
 });

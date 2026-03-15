@@ -1,10 +1,9 @@
 import React, { Component } from 'react'
-import Paper from '@material-ui/core/Paper';
-import { withStyles } from '@material-ui/core/styles';
+import Paper from '@mui/material/Paper';
+import { withStyles } from '@mui/styles';
 import LifeTimeChip from './lifetimechip';
 import PropTypes from 'prop-types';
-import GridList from '@material-ui/core/GridList';
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 
 const alternatives = [
     { minutes: 1, label: '1 m' },
@@ -33,13 +32,16 @@ const styles = theme => ({
         display: 'flex',
         justifyContent: 'center',
         flexWrap: 'wrap',
-        padding: theme.spacing.unit / 2,
+        padding: theme.spacing(0.5),
         paddingTop: '20px',
     },
     gridList: {
         flexWrap: 'nowrap',
         transform: 'translateZ(0)',
         overflowX: 'auto',
+        display: 'flex',
+        flexDirection: 'row',
+        width: '100%',
     },
     sectionHeader: {
         textAlign: 'left',
@@ -65,8 +67,8 @@ class LifeTimeSelector extends Component {
         const { classes } = this.props;
         return (
             <Paper className={classes.root} elevation={0}>
-                <Typography inline={true} className={classes.sectionHeader}>Message lifetime:</Typography>
-                <GridList className={classes.gridList} cellHeight={30}>
+                <Typography className={classes.sectionHeader}>Message lifetime:</Typography>
+                <div className={classes.gridList}>
                     {alternatives.map(chip => (
                         <LifeTimeChip
                             key={chip.minutes}
@@ -75,7 +77,7 @@ class LifeTimeSelector extends Component {
                             chipClicked={this.props.setLifetime}
                         />
                     ), this)}
-                </GridList>
+                </div>
             </Paper>
         );
     }

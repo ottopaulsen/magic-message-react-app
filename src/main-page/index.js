@@ -7,8 +7,8 @@ import SignInPage from '../signin'
 import MagicScreens from './magicscreens';
 import { Offline, Online } from "react-detect-offline";
 import MessageService from '../services/messageservice';
-import { withStyles } from '@material-ui/core/styles';
-import Grid from '@material-ui/core/Grid';
+import { withStyles } from '@mui/styles';
+import Grid from '@mui/material/Grid';
 
 const lsPrefix = 'Magic-'
 
@@ -19,7 +19,6 @@ const styles = theme => ({
 });
 
 class MainPage extends Component {
-
     constructor(props) {
         super(props)
         this.messageService = new MessageService(this.props.auth)
@@ -32,28 +31,20 @@ class MainPage extends Component {
             screens: screens,
             token: null,
         }
-        console.log("MainPage constructor")
-
     }
 
     componentDidMount() {
         this.setState({ mustSignIn: !this.props.auth.loadFromLocalStorage() })
         this.props.auth.fbAuth().onAuthStateChanged(user => {
-            console.log('Auth state changed, user = ', user)
             const auth = this.props.auth
             auth.authStateChanged(user)
-            this.setState({
-                isAuthenticated: !!user,
-                auth: auth,
-            })
+            this.setState({ isAuthenticated: !!user, auth: auth })
         });
 
         this.props.auth.fbAuth().onIdTokenChanged(user => {
             if (user) {
-                console.log('Getting token')
                 user.getIdToken()
                     .then(token => {
-                        console.log('Got token: ', token)
                         this.setState({ token })
                         this.props.auth.setToken(token)
                         this.fetchScreens(token)
@@ -62,13 +53,10 @@ class MainPage extends Component {
                         console.log('Failed to getIdToken: ', error)
                     })
             } else {
-                console.log('idTokenChanged - no user')
                 this.setState({ token: null })
                 this.props.auth.setToken(null)
             }
         });
-
-        console.log("MainPage did mount.")
     }
 
     componentDidCatch(error, info) {
@@ -81,11 +69,7 @@ class MainPage extends Component {
         this.setState({ fetchingScreens: true })
         this.messageService.getScreens()
             .then(screens => {
-                console.log('Fetched screens: ', screens)
-                self.setState({
-                    screens: screens,
-                    fetchingScreens: false
-                })
+                self.setState({ screens, fetchingScreens: false })
                 localStorage.setItem(lsPrefix + 'screens', JSON.stringify(screens))
             })
             .catch(error => {
@@ -99,18 +83,8 @@ class MainPage extends Component {
     }
 
     render = () => {
-
         const { classes } = this.props;
-
-
-        let errorText = ""
-        if (this.hasError) {
-            errorText = "<div><h2>An error occured</h2></div>"
-        }
-
-        // Decide data part
         let page = <div>Blank page</div>
-        console.log('State: ', this.state)
         if (this.state.mustSignIn) {
             page = <SignInPage auth={this.props.auth} />
         } else if (this.state.mustShowInstructions) {
@@ -124,7 +98,6 @@ class MainPage extends Component {
             />
         }
 
-        // Decide footer part
         let footerText = ""
         if (!this.state.isAuthenticated) {
             footerText = "Authenticating..."
@@ -135,13 +108,8 @@ class MainPage extends Component {
         }
 
         return (
-            <Grid container
-                direction="column"
-                alignItems="center"
-                justify="center"
-            >
+            <Grid container direction="column" alignItems="center" justifyContent="center">
                 <div className={classes.mainPage}>
-                    {errorText}
                     <Header />
                     <Online>
                         {page}
@@ -156,5 +124,3 @@ class MainPage extends Component {
     }
 }
 export default withStyles(styles)(MainPage);
-
-

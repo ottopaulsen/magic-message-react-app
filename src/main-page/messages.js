@@ -1,39 +1,27 @@
 import React, { Component } from 'react';
 import Message from './message'
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles } from '@mui/styles';
 
 const styles = theme => ({
-    messageList: {
-    },
+    messageList: {},
 });
 
-
 class Messages extends Component {
-    state = {
-        messages: [],
-        timeNow: new Date(),
-    }
+    state = { messages: [], timeNow: new Date() }
 
     constructor(props) {
         super(props)
-
         const self = this
-
         this.unsubscribe = this.props.db.collection('/screens/' + this.props.screenKey + '/messages')
             .orderBy("sentTime", "desc")
             .onSnapshot(function (snapshot) {
                 let messages = []
-                snapshot.forEach(message => {
-                    messages.push(message)
-                })
+                snapshot.forEach(message => { messages.push(message) })
                 self.setState({ messages })
             }, function (error) {
                 console.log('Error getting messages: ', error)
             })
-
-        this.interval = setInterval(() => {
-            this.setState({ timeNow: new Date() })
-        }, 5000)
+        this.interval = setInterval(() => { this.setState({ timeNow: new Date() }) }, 5000)
     }
 
     componentWillUnmount = () => {

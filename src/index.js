@@ -1,36 +1,30 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 import { Firebase, FirebaseContext } from './firebase'
 import { Auth } from './auth'
-import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
-import 'typeface-monda';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import '@fontsource/monda';
 import MainPage from './main-page'
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
-    fontFamily: [
-      'Monda',
-    ].join(','),
-    useNextVariants: true,
+    fontFamily: ['Monda', 'sans-serif'].join(','),
   },
 });
 
-ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
+const root = createRoot(document.getElementById('root'));
+root.render(
+  <ThemeProvider theme={theme}>
     <FirebaseContext.Provider value={new Firebase()}>
       <FirebaseContext.Consumer>
-        {/* {firebase => <Auth fbAuth={firebase.auth} />} */}
         {firebase =>
           <MainPage auth={new Auth(firebase.auth)} />
         }
       </FirebaseContext.Consumer>
     </FirebaseContext.Provider>
-  </MuiThemeProvider>,
-  document.getElementById('root'),
+  </ThemeProvider>
 );
 
 serviceWorker.unregister();
-
-

@@ -1,6 +1,6 @@
-import app from 'firebase/app';
-import 'firebase/auth';
-
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
 
 const firebaseConfig = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -13,19 +13,12 @@ const firebaseConfig = {
 
 class Firebase {
     constructor() {
-
-        if (!app.apps.length) {
-            app.initializeApp(firebaseConfig);
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
         }
-        this.auth = app.auth();
-        this.db = app.firestore();
-        // this.db.settings({
-        //     timestampsInSnapshots: true
-        // });
+        this.auth = firebase.auth();
+        this.db = firebase.firestore();
     }
-
 }
 
 export default Firebase;
-
-
