@@ -37,6 +37,7 @@ class WriteMessage extends Component {
                     onKeyDown={(ev) => {
                         if (ev.key === 'Enter') { this.sendMessage(); ev.preventDefault(); }
                     }}
+                    sx={{ '& .MuiOutlinedInput-root': { backgroundColor: '#fffde7' } }}
                 />
                 <Button variant="contained" size="small" color='primary' className={classes.button} onClick={this.sendMessage}>Send</Button>
             </Paper>

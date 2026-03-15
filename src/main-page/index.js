@@ -109,7 +109,7 @@ class MainPage extends Component {
         } else if (this.state.fetchingScreens) {
             footerText = "Fetching screens..."
         } else if (this.state.screens.length > 0) {
-            footerText = "Signed in as " + this.props.auth.userDisplayName()
+            footerText = "Logged in as " + this.props.auth.userDisplayName()
         }
 
         return (

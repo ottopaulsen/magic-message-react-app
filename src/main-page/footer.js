@@ -14,10 +14,10 @@ const styles = theme => ({
         left: 0,
     },
     footerText: {
-        color: "#dddddd",
+        color: theme.palette.text.primary,
     },
     logoutIcon: {
-        color: "#dddddd",
+        color: theme.palette.text.secondary,
         marginTop: 5,
         marginRight: 10,
     }
@@ -35,7 +35,7 @@ class Footer extends Component {
         const { classes } = this.props;
         console.log("Footer render")
         return (
-            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
+            <AppBar position="fixed" color="default" sx={{ top: 'auto', bottom: 0, backgroundColor: 'white' }}>
                 <table width="100%">
                     <tbody>
                         <tr>
@@ -48,7 +48,7 @@ class Footer extends Component {
                                 <Icon className={classes.logoutIcon}
                                     path={mdiLogout}
                                     size={1}
-                                    color="#dddddd"
+                                    color="#555555"
                                     onClick={this.signOut}
                                 />
                             </td>
