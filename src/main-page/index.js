@@ -38,7 +38,11 @@ class MainPage extends Component {
         this.props.auth.fbAuth().onAuthStateChanged(user => {
             const auth = this.props.auth
             auth.authStateChanged(user)
-            this.setState({ isAuthenticated: !!user, auth: auth })
+            this.setState({
+                isAuthenticated: !!user,
+                mustSignIn: !user,
+                auth: auth,
+            })
         });
 
         this.props.auth.fbAuth().onIdTokenChanged(user => {

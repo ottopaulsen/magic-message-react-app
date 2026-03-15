@@ -35,7 +35,7 @@ class Footer extends Component {
         const { classes } = this.props;
         console.log("Footer render")
         return (
-            <AppBar position="fixed" color="primary" className={classes.appBar}>
+            <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }}>
                 <table width="100%">
                     <tbody>
                         <tr>
