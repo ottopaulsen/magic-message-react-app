@@ -44,7 +44,10 @@ class MagicScreens extends Component {
 
     constructor(props) {
         super(props)
-        const defaultScreen = parseInt(localStorage.getItem(lsPrefix + 'LastUsedScreen') || '0')
+        let defaultScreen = parseInt(localStorage.getItem(lsPrefix + 'LastUsedScreen') || '0')
+        if (isNaN(defaultScreen) || defaultScreen >= props.screens.length) {
+            defaultScreen = 0
+        }
         this.state.activeScreen = defaultScreen
     }
 
