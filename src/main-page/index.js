@@ -14,7 +14,8 @@ const lsPrefix = 'Magic-'
 
 const styles = theme => ({
     mainPage: {
-         width: 400,
+        maxWidth: 600,
+        width: '100%',
     },
 });
 

@@ -30,7 +30,7 @@ class Screen extends Component {
         const { classes, screen } = this.props;
         return (
             <div className={classes.root}>
-                <Typography className={classes.screenLabel} variant="caption">Screen:</Typography>
+                <Typography className={classes.screenLabel} variant="body2">Screen:</Typography>
                 <Paper className={classes.paper} elevation={1}>
                     <Typography className={classes.screenName} align="center" variant="h5">
                         {screen.name}
