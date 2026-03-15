@@ -24,10 +24,11 @@ class MainPage extends Component {
         super(props)
         this.messageService = new MessageService(this.props.auth)
         const screens = JSON.parse(localStorage.getItem(lsPrefix + 'screens')) || []
+        const hasUser = props.auth.loadFromLocalStorage()
         this.state = {
             fetchingScreens: false,
-            isAuthenticated: false,
-            mustSignIn: false,
+            isAuthenticated: hasUser,
+            mustSignIn: !hasUser,
             mustShowInstructions: false,
             screens: screens,
             token: null,
@@ -35,7 +36,6 @@ class MainPage extends Component {
     }
 
     componentDidMount() {
-        this.setState({ mustSignIn: !this.props.auth.loadFromLocalStorage() })
         this.props.auth.fbAuth().onAuthStateChanged(user => {
             const auth = this.props.auth
             auth.authStateChanged(user)
@@ -71,11 +71,20 @@ class MainPage extends Component {
 
     fetchScreens = (token) => {
         const self = this
-        this.setState({ fetchingScreens: true })
+        const alreadyHasScreens = this.state.screens.length > 0
+        if (!alreadyHasScreens) {
+            this.setState({ fetchingScreens: true })
+        }
         this.messageService.getScreens()
             .then(screens => {
-                self.setState({ screens, fetchingScreens: false })
                 localStorage.setItem(lsPrefix + 'screens', JSON.stringify(screens))
+                // Only update state if screens actually changed — avoids re-rendering
+                // MagicScreens (and clearing the message input) when token refreshes
+                if (JSON.stringify(screens) !== JSON.stringify(self.state.screens)) {
+                    self.setState({ screens, fetchingScreens: false })
+                } else if (!alreadyHasScreens) {
+                    self.setState({ fetchingScreens: false })
+                }
             })
             .catch(error => {
                 console.log('Error fetching screens: ', error)
