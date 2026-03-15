@@ -95,19 +95,15 @@ class MagicScreens extends Component {
     }
 
     nextScreen = () => {
-        this.setState(state => {
-            if (state.activeScreen < this.props.screens.length - 1) {
-                this.setState({ activeScreen: state.activeScreen + 1 })
-            }
-        })
+        if (this.state.activeScreen < this.props.screens.length - 1) {
+            this.handleChangeIndex(this.state.activeScreen + 1)
+        }
     }
 
     prevScreen = () => {
-        this.setState(state => {
-            if (state.activeScreen > 0) {
-                this.setState({ activeScreen: state.activeScreen - 1 })
-            }
-        })
+        if (this.state.activeScreen > 0) {
+            this.handleChangeIndex(this.state.activeScreen - 1)
+        }
     }
 
     render() {
