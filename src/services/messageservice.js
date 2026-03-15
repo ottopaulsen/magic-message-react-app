@@ -1,4 +1,4 @@
-const magicServerUrl = process.env.REACT_APP_MAGIC_SERVER_URL;
+const magicServerUrl = import.meta.env.VITE_MAGIC_SERVER_URL;
 
 class MessageService {
   constructor(auth) {
