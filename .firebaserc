@@ -1,0 +1,19 @@
+{
+  "projects": {
+    "react": "magic-acf51",
+    "default": "magic-acf51"
+  },
+  "targets": {
+    "magic-acf51": {
+      "hosting": {
+        "rx": [
+          "magicmessagerx"
+        ],
+        "prod": [
+          "magic-acf51"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}

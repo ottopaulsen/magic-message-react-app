@@ -21,4 +21,4 @@ yarn-error.log*
 .env.*
 !.env.dummy
 /.firebase
-.firebaserc
+.firebaserc/dist
