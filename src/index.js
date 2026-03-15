@@ -12,6 +12,11 @@ const theme = createTheme({
   typography: {
     fontFamily: ['Monda', 'sans-serif'].join(','),
   },
+  palette: {
+    primary: {
+      main: '#3f51b5',
+    },
+  },
 });
 
 const root = createRoot(document.getElementById('root'));

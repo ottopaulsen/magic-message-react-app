@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import { Button, TextField } from '@mui/material';
 
 const styles = theme => ({
-    root: { display: 'flex', justifyContent: 'center', flexWrap: 'wrap', paddingTop: '25px' },
-    button: { width: '20%' },
+    root: { display: 'flex', justifyContent: 'center', alignItems: 'center', flexWrap: 'wrap', paddingTop: '10px' },
+    button: { width: '20%', alignSelf: 'stretch' },
     textField: { marginLeft: '0px', marginRight: '0px', width: '80%', marginTop: '0px', marginBottom: '0px' },
 });
 

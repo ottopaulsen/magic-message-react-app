@@ -11,9 +11,13 @@ const styles = theme => ({
         paddingBottom: theme.spacing(2),
         paddingLeft: theme.spacing(2),
         paddingRight: theme.spacing(2),
-        background: "#212121",
+        background: "black",
         color: "#dddddd",
         height: "250px",
+    },
+    screenLabel: {
+        color: theme.palette.text.secondary,
+        paddingBottom: theme.spacing(0.5),
     },
     screenName: {
         color: "#dddddd",
@@ -26,6 +30,7 @@ class Screen extends Component {
         const { classes, screen } = this.props;
         return (
             <div className={classes.root}>
+                <Typography className={classes.screenLabel} variant="caption">Screen:</Typography>
                 <Paper className={classes.paper} elevation={1}>
                     <Typography className={classes.screenName} align="center" variant="h5">
                         {screen.name}
